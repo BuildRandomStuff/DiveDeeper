@@ -5,41 +5,60 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>DIVE DEEPER</title>
 <style>
-  html,body{margin:0;height:100%;overflow:hidden;background:#021019;color:#e6fbff;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;user-select:none;-webkit-user-select:none}
-  #gl{position:fixed;inset:0;width:100%;height:100%;display:block;outline:none}
+  :root{forced-color-adjust:none;color-scheme:dark;--ink:#e8fbff;--accent:#5fe3ff;--accent2:#3cffc4;--panel:rgba(4,22,36,.62);--edge:rgba(140,230,255,.28);--glow:0 0 18px rgba(95,227,255,.35)}
+  html,body{margin:0;height:100%;overflow:hidden;background:#021019;color:var(--ink);font-family:"Segoe UI Variable Display","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;user-select:none;-webkit-user-select:none}
+  #gl{position:fixed;inset:0;width:100%;height:100%;display:block;outline:none;background:#021019}
   .hidden{display:none!important}
-  #title{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 30%,#0c4a66 0%,#04202f 55%,#010a10 100%);z-index:20;text-align:center;padding:20px;box-sizing:border-box;overflow:auto}
-  #title h1{font-size:clamp(40px,8vw,86px);letter-spacing:.12em;margin:0;color:#bff4ff;text-shadow:0 0 30px #2fd3ff88}
-  #title .sub{opacity:.8;margin:6px 0 26px;font-size:16px;letter-spacing:.08em}
-  .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:6px 0}
-  .btn{background:rgba(20,90,120,.75);color:#e6fbff;border:1px solid rgba(150,230,255,.45);border-radius:10px;padding:12px 18px;font:inherit;font-size:16px;cursor:pointer;min-width:150px}
-  .btn:hover{background:rgba(40,130,170,.9)}
-  .btn small{display:block;opacity:.75;font-size:12px;margin-top:3px}
-  #controls{max-width:820px;margin-top:22px;font-size:13px;line-height:1.55;opacity:.85;text-align:left;display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  #controls b{color:#9fefff}
-  #loading{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#021019;z-index:30;font-size:20px;letter-spacing:.1em}
+  #title{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20;text-align:center;padding:24px;box-sizing:border-box;overflow:auto;
+    background:radial-gradient(ellipse 120% 70% at 50% -10%,rgba(120,230,255,.45) 0%,rgba(20,110,150,.25) 30%,transparent 60%),linear-gradient(180deg,#0b5576 0%,#063049 38%,#021422 75%,#01070c 100%)}
+  #title::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
+    background:repeating-linear-gradient(100deg,transparent 0 60px,rgba(180,245,255,.06) 60px 90px,transparent 90px 170px);animation:rays 14s linear infinite;mask-image:linear-gradient(180deg,#000 0%,transparent 70%)}
+  #title::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(200,250,255,.5) 0 1.5px,transparent 2px),radial-gradient(circle,rgba(200,250,255,.35) 0 1px,transparent 1.5px);
+    background-size:140px 160px,90px 110px;animation:rise 22s linear infinite;opacity:.6}
+  @keyframes rays{from{background-position:0 0}to{background-position:680px 0}}
+  @keyframes rise{from{background-position:0 0,30px 0}to{background-position:0 -1600px,30px -1100px}}
+  #title>*{position:relative;z-index:1}
+  #title h1{font-size:clamp(52px,10vw,128px);font-weight:800;letter-spacing:.14em;margin:0;line-height:1;
+    background:linear-gradient(180deg,#ffffff 0%,#bff6ff 45%,#4fd6ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 28px rgba(70,210,255,.55)) drop-shadow(0 6px 2px rgba(0,20,40,.5))}
+  #title .sub{opacity:.85;margin:14px 0 30px;font-size:clamp(13px,1.6vw,18px);letter-spacing:.32em;color:#a9eeff}
+  .row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:8px 0}
+  .btn{background:linear-gradient(180deg,rgba(40,150,190,.85),rgba(12,80,115,.9));color:var(--ink);border:1px solid rgba(150,235,255,.55);border-radius:14px;padding:16px 28px;font:inherit;font-size:19px;font-weight:600;letter-spacing:.04em;cursor:pointer;min-width:220px;
+    box-shadow:0 8px 28px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.25),var(--glow);transition:transform .15s,box-shadow .15s,background .15s}
+  .btn:hover{transform:translateY(-2px) scale(1.03);background:linear-gradient(180deg,rgba(70,190,230,.95),rgba(20,110,150,.95));box-shadow:0 12px 34px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.35),0 0 30px rgba(95,227,255,.6)}
+  .btn small{display:block;opacity:.75;font-size:13px;font-weight:400;margin-top:4px;letter-spacing:.02em}
+  #controls{max-width:900px;margin-top:28px;font-size:14px;line-height:1.65;text-align:left;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  #controls>div{background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:14px 18px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  #controls b{color:var(--accent);letter-spacing:.04em}
+  #loading{position:fixed;inset:0;display:flex;flex-direction:column;gap:18px;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 20%,#0a3d57,#021019 70%);color:#bff4ff;z-index:30;font-size:22px;letter-spacing:.3em}
+  #loading::after{content:"";width:220px;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,var(--accent),transparent);background-size:200% 100%;animation:load 1.2s linear infinite}
+  @keyframes load{from{background-position:200% 0}to{background-position:-200% 0}}
   #hud{position:fixed;inset:0;pointer-events:none;z-index:5}
-  #meters{position:absolute;left:14px;top:14px;width:220px;background:rgba(2,20,32,.6);border:1px solid rgba(150,230,255,.25);border-radius:10px;padding:8px 10px;font-size:12px}
-  .m{margin:4px 0}.m .l{display:flex;justify-content:space-between;opacity:.85}
-  .bar{height:8px;background:rgba(0,0,0,.45);border-radius:4px;overflow:hidden;margin-top:2px}.bar>i{display:block;height:100%}
-  #obj{position:absolute;left:50%;top:12px;transform:translateX(-50%);max-width:60%;text-align:center;background:rgba(2,20,32,.6);border:1px solid rgba(150,230,255,.25);border-radius:10px;padding:8px 14px;font-size:14px}
-  #toast{position:absolute;left:50%;top:70px;transform:translateX(-50%);font-size:16px;text-shadow:0 1px 4px #000;transition:opacity .5s;white-space:nowrap}
-  #prompt{position:absolute;left:50%;top:58%;transform:translateX(-50%);font-size:15px;text-shadow:0 1px 4px #000;background:rgba(0,0,0,.35);padding:4px 10px;border-radius:8px}
-  #warn{position:absolute;left:50%;top:40%;transform:translateX(-50%);font-size:22px;color:#ff8a7a;text-shadow:0 1px 6px #000;font-weight:600}
-  #cross{position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:rgba(255,255,255,.7);box-shadow:0 0 4px #000}
-  #hotbar{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:6px}
-  .slot{min-width:84px;padding:6px 6px;text-align:center;font-size:11px;border-radius:8px;border:1px solid rgba(150,230,255,.3);background:rgba(2,20,32,.6)}
-  .slot.on{border-color:#7ff0ff;box-shadow:0 0 10px #7ff0ff66}
-  #vrbtn{position:absolute;right:14px;top:14px;pointer-events:auto}
-  #pdawrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:10;background:rgba(0,10,16,.35)}
-  #pdawrap canvas{width:min(92vw,122vh);height:auto;border-radius:14px;box-shadow:0 0 40px #000a}
+  .glass{background:var(--panel);border:1px solid var(--edge);backdrop-filter:blur(8px) saturate(1.3);-webkit-backdrop-filter:blur(8px) saturate(1.3);box-shadow:0 6px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08)}
+  #meters{position:absolute;left:18px;top:18px;width:290px;border-radius:16px;padding:12px 16px;font-size:14px;background:var(--panel);border:1px solid var(--edge);backdrop-filter:blur(8px) saturate(1.3);-webkit-backdrop-filter:blur(8px) saturate(1.3);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+  .m{margin:7px 0}.m .l{display:flex;justify-content:space-between;opacity:.92;font-weight:600;letter-spacing:.03em}
+  .bar{height:10px;background:rgba(0,0,0,.5);border-radius:6px;overflow:hidden;margin-top:4px;box-shadow:inset 0 1px 3px rgba(0,0,0,.6)}
+  .bar>i{display:block;height:100%;border-radius:6px;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -2px 3px rgba(0,0,0,.25);transition:width .25s}
+  #obj{position:absolute;left:50%;top:16px;transform:translateX(-50%);max-width:56%;text-align:center;border-radius:16px;padding:10px 20px;font-size:17px;font-weight:600;background:var(--panel);border:1px solid var(--edge);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+  #toast{position:absolute;left:50%;top:84px;transform:translateX(-50%);font-size:18px;font-weight:600;text-shadow:0 2px 8px #000,0 0 2px #000;transition:opacity .5s;white-space:nowrap;text-align:center;line-height:1.5}
+  #prompt{position:absolute;left:50%;top:58%;transform:translateX(-50%);font-size:18px;font-weight:600;background:rgba(4,22,36,.7);border:1px solid var(--edge);padding:8px 16px;border-radius:12px;box-shadow:var(--glow)}
+  #warn{position:absolute;left:50%;top:38%;transform:translateX(-50%);font-size:28px;color:#ff8a7a;text-shadow:0 2px 10px #000,0 0 18px rgba(255,80,60,.6);font-weight:800;letter-spacing:.06em;animation:pulse 1s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.55}}
+  #cross{position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;border:2px solid rgba(255,255,255,.55);box-shadow:0 0 6px rgba(0,0,0,.6),inset 0 0 4px rgba(0,0,0,.4)}
+  #cross::after{content:"";position:absolute;left:50%;top:50%;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:#fff;box-shadow:0 0 6px var(--accent)}
+  #hotbar{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:8px}
+  .slot{min-width:100px;padding:9px 8px;text-align:center;font-size:13px;font-weight:600;border-radius:12px;border:1px solid var(--edge);background:var(--panel);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(0,0,0,.35);transition:transform .15s}
+  .slot.on{border-color:var(--accent);background:linear-gradient(180deg,rgba(40,150,190,.7),rgba(8,50,75,.75));box-shadow:0 0 18px rgba(95,227,255,.55),inset 0 1px 0 rgba(255,255,255,.25);transform:translateY(-4px)}
+  #vrbtn{position:absolute;right:18px;top:18px;pointer-events:auto}
+  #pdawrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:10;background:radial-gradient(ellipse at center,rgba(0,20,32,.35),rgba(0,6,10,.7));backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+  #pdawrap canvas{width:min(94vw,126vh);height:auto;border-radius:18px;box-shadow:0 0 0 1px rgba(140,230,255,.3),0 20px 60px #000c,0 0 40px rgba(95,227,255,.25)}
   #fade{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;z-index:8;transition:opacity .3s}
-  #overlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,8,14,.8);z-index:15;text-align:center;padding:20px;box-sizing:border-box}
-  #overlay h2{font-size:42px;margin:0 0 12px;color:#bff4ff}
-  #overlay p{max-width:640px;line-height:1.6;opacity:.9}
+  #overlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,rgba(4,40,60,.8),rgba(0,6,10,.92));z-index:15;text-align:center;padding:24px;box-sizing:border-box;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  #overlay h2{font-size:clamp(36px,6vw,64px);margin:0 0 14px;background:linear-gradient(180deg,#fff,#6fdfff);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.06em}
+  #overlay p{max-width:680px;line-height:1.7;opacity:.92;font-size:17px}
   .inlobby #meters,.inlobby #hotbar{display:none}
-  #hint{position:absolute;right:14px;bottom:64px;font-size:12px;opacity:.7;text-align:right;line-height:1.5}
-</style>
+  #hint{position:absolute;right:18px;bottom:84px;font-size:13px;opacity:.75;text-align:right;line-height:1.5;text-shadow:0 1px 4px #000;max-width:46vw}
+  @media (max-width:1150px){.slot{min-width:0;padding:7px 6px;font-size:11px}#hotbar{gap:5px}#meters{width:230px}#obj{max-width:44%;font-size:15px}}
+  @media (max-width:900px){#controls{grid-template-columns:1fr}}</style>
 </head>
 <body>
 <canvas id="gl" tabindex="0"></canvas>
@@ -48,7 +67,7 @@
   <h1>DIVE DEEPER</h1>
   <div class="sub">A VR SURVIVAL ADVENTURE ON THE OCEAN WORLD NERATHIS-9</div>
   <div class="row" id="splashRow"><button class="btn" id="bPlay">Play on this screen<small>Keyboard and mouse</small></button></div>
-  <div id="vrNote" style="font-size:14px;color:#9fefff;margin:6px 0 8px"></div><div style="font-size:12px;color:#6f93a6">build 11-25 E (vehicles + bigger map)</div>
+  <div id="vrNote" style="font-size:14px;color:#9fefff;margin:6px 0 8px"></div><div style="font-size:12px;color:#6f93a6">build 11-25 G (living ocean + Odyssey-7)</div>
   <div style="max-width:640px;opacity:.85;font-size:14px;line-height:1.5">You start in the dive station lobby. Walk to the computer to play single player, create or join a multiplayer room with a code, or change your gorilla’s name, colour and turning. In VR you move like Gorilla Tag: push off the floor and walls with your hands.</div>
   <div id="controls">
     <div><b>Meta Quest (VR) — Gorilla Tag movement</b><br>
@@ -310,46 +329,155 @@ void main(){
   vCol = vec4(aCol.rgb * T.rgb, clamp(aCol.a + T.a, 0.0, 1.0));
   gl_Position = uProj * uView * wp;
 }`;
+// shared lighting helpers: the background pass and the world use the same fog colour, so geometry melts into the water
+const COMMON_GLSL = `
+uniform vec3 uFog; uniform vec3 uSun; uniform vec3 uSunDir; uniform float uUnder; uniform float uTime; uniform float uDay;
+float hash3(vec3 p){ p = fract(p*0.3183099 + 0.1); p *= 17.0; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
+float vnoise(vec3 x){
+  vec3 i = floor(x), f = fract(x); f = f*f*(3.0-2.0*f);
+  return mix(mix(mix(hash3(i+vec3(0,0,0)),hash3(i+vec3(1,0,0)),f.x), mix(hash3(i+vec3(0,1,0)),hash3(i+vec3(1,1,0)),f.x),f.y),
+             mix(mix(hash3(i+vec3(0,0,1)),hash3(i+vec3(1,0,1)),f.x), mix(hash3(i+vec3(0,1,1)),hash3(i+vec3(1,1,1)),f.x),f.y), f.z);
+}
+vec3 waterSunDir(){ vec3 s = normalize(uSunDir); return normalize(vec3(s.x*0.55, 1.0, s.z*0.55)); }
+// colour of the water (or sky) seen along direction V with nothing in the way
+vec3 envColor(vec3 V){
+  if (uUnder > 0.5) {
+    vec3 c = uFog * mix(0.42, 1.45, smoothstep(-0.85, 0.95, V.y));
+    float s = max(dot(V, waterSunDir()), 0.0);
+    vec3 glow = uSun * (vec3(0.35,0.75,0.85) * pow(s, 5.0) * 0.45 + vec3(0.8,0.95,1.0) * pow(s, 40.0) * 0.55);
+    return c + glow * (0.35 + 0.65 * smoothstep(0.0, 0.25, length(uFog)));
+  }
+  float y = V.y;
+  vec3 zen = vec3(0.16, 0.40, 0.80) * mix(0.04, 1.0, uDay), hor = mix(uFog, vec3(0.80, 0.90, 0.98) * uDay, 0.35);
+  vec3 c = mix(hor, zen, pow(clamp(y, 0.0, 1.0), 0.55));
+  if (y < 0.0) c = mix(hor, vec3(0.02, 0.17, 0.27) * mix(0.15, 1.0, uDay), clamp(-y * 5.0, 0.0, 1.0));
+  float s = max(dot(V, normalize(uSunDir)), 0.0);
+  c += uSun * (pow(s, 600.0) * 4.0 + pow(s, 12.0) * 0.25) * smoothstep(-0.05, 0.05, uSunDir.y);
+  if (uDay < 0.99 && y > 0.0) { // stars
+    vec3 g = floor(V * 420.0); float st = step(0.9975, hash3(g)) * (0.5 + 0.5 * sin(uTime * 2.0 + hash3(g + 7.0) * 40.0));
+    c += vec3(0.85, 0.9, 1.0) * st * (1.0 - uDay) * smoothstep(0.0, 0.25, y);
+  }
+  return c;
+}`;
 const WORLD_FS = `
 precision highp float;
 in vec3 vPos; in vec3 vNor; in vec4 vCol;
-uniform vec3 uCam; uniform vec3 uSky; uniform vec3 uGnd; uniform vec3 uSunDir; uniform vec3 uSun;
-uniform vec3 uFog; uniform float uFogDen; uniform float uTime; uniform float uCaustic; uniform float uAlpha;
+uniform vec3 uCam; uniform vec3 uSky; uniform vec3 uGnd;
+uniform float uFogDen; uniform float uCaustic; uniform float uAlpha;
 uniform float uLampOn; uniform vec3 uLampPos; uniform vec3 uLampDir; uniform float uLampRange;
-uniform vec4 uPL[4]; uniform vec3 uPLC[4]; uniform float uSplit;
+uniform vec4 uPL[4]; uniform vec3 uPLC[4]; uniform float uSplit; uniform float uMat;
 uniform vec4 uSonar; uniform vec2 uSonarA; uniform vec4 uXray;
 out vec4 o;
+` + COMMON_GLSL + `
+// animated light pattern projected by the waves onto the sea floor
+float caustic(vec2 uv, float time){
+  vec2 p = mod(uv * 6.28318, 6.28318) - 250.0;
+  vec2 i = p; float c = 1.0; float inten = 0.005;
+  for (int k = 0; k < 4; k++) {
+    float t = time * (1.0 - (3.5 / float(k + 1)));
+    i = p + vec2(cos(t - i.x) + sin(t + i.y), sin(t - i.y) + cos(t + i.x));
+    c += 1.0 / length(vec2(p.x / (sin(i.x + t) / inten), p.y / (cos(i.y + t) / inten)));
+  }
+  c /= 4.0; c = 1.17 - pow(c, 1.4);
+  return pow(abs(c), 8.0);
+}
+vec3 waveNormal(vec2 p, float t){
+  float dx = 0.0, dz = 0.0;
+  vec2 d1 = vec2(0.8, 0.6), d2 = vec2(-0.5, 0.86), d3 = vec2(0.2, -0.98), d4 = vec2(-0.9, -0.3);
+  dx += d1.x * cos(dot(p, d1) * 0.35 + t * 1.2) * 0.35; dz += d1.y * cos(dot(p, d1) * 0.35 + t * 1.2) * 0.35;
+  dx += d2.x * cos(dot(p, d2) * 0.7 + t * 1.7) * 0.22; dz += d2.y * cos(dot(p, d2) * 0.7 + t * 1.7) * 0.22;
+  dx += d3.x * cos(dot(p, d3) * 1.6 + t * 2.3) * 0.12; dz += d3.y * cos(dot(p, d3) * 1.6 + t * 2.3) * 0.12;
+  dx += d4.x * cos(dot(p, d4) * 3.1 + t * 3.1) * 0.06; dz += d4.y * cos(dot(p, d4) * 3.1 + t * 3.1) * 0.06;
+  return normalize(vec3(-dx, 1.0, -dz));
+}
 void main(){
+  vec3 toCam = uCam - vPos; float dist = length(toCam); vec3 V = toCam / max(dist, 1e-4);
+  vec3 rd = -V;
+  if (uMat > 0.5 && uMat < 1.5) { // ---- ocean surface ----
+    vec3 wn = waveNormal(vPos.xz, uTime);
+    float fogF = 1.0 - exp(-pow(dist * uFogDen, 2.0));
+    if (uCam.y < 0.0) { // seen from below: Snell's window + total internal reflection
+      vec3 nn = -normalize(vec3(wn.x * 0.3, 1.0, wn.z * 0.3));
+      vec3 rf = refract(rd, nn, 1.33);
+      float shimmer = 0.85 + 0.3 * vnoise(vec3(vPos.xz * 0.35, uTime * 0.7));
+      vec3 col;
+      if (dot(rf, rf) < 0.01) { col = uFog * (0.8 + 0.25 * vnoise(vec3(vPos.xz * 0.2, uTime * 0.5))); }
+      else {
+        float sp = pow(max(dot(normalize(rf), normalize(uSunDir)), 0.0), 80.0);
+        col = mix(vec3(0.3, 0.62, 0.72), vec3(0.55, 0.82, 0.9), clamp(rf.y, 0.0, 1.0)) * (0.4 + 0.5 * length(uSun)) * shimmer + vec3(1.0, 0.95, 0.85) * sp * 1.4;
+        float edge = smoothstep(0.0, 0.6, rf.y); col = mix(uFog * 1.3, col, edge);
+      }
+      col = mix(col, envColor(rd), clamp(fogF, 0.0, 1.0));
+      o = vec4(col, mix(0.92, 1.0, fogF)); return;
+    }
+    float fres = 0.02 + 0.98 * pow(1.0 - max(dot(wn, V), 0.0), 5.0);
+    vec3 R = reflect(rd, wn); R.y = abs(R.y);
+    vec3 sky = envColor(R);
+    vec3 deep = (vec3(0.015, 0.16, 0.24) + vec3(0.02, 0.12, 0.12) * (1.0 - V.y)) * mix(0.1, 1.0, uDay);
+    vec3 col = mix(deep, sky, clamp(fres + 0.08, 0.0, 1.0));
+    float sp = pow(max(dot(R, normalize(uSunDir)), 0.0), 320.0);
+    col += vec3(1.0, 0.95, 0.85) * sp * 5.0;
+    float foam = smoothstep(0.78, 0.95, vnoise(vec3(vPos.xz * 0.6, uTime * 0.3))) * 0.12;
+    col += foam;
+    col = mix(col, envColor(rd), clamp(fogF, 0.0, 1.0));
+    o = vec4(col, 0.94); return;
+  }
+  if (uMat > 1.5) { // ---- god ray shaft ----
+    vec3 n0 = normalize(vNor);
+    float edge = pow(abs(dot(n0, V)), 2.5);
+    float yf = smoothstep(-75.0, -1.0, vPos.y) * smoothstep(0.0, -3.0, vPos.y);
+    float flick = 0.75 + 0.25 * sin(uTime * 0.8 + vPos.x * 0.3 + vPos.z * 0.2);
+    float fogF = 1.0 - exp(-pow(dist * uFogDen * 0.6, 2.0));
+    o = vec4(uSun * vec3(0.85, 1.0, 0.95) * 1.6, uAlpha * edge * yf * flick * (1.0 - fogF)); return;
+  }
   vec3 n = normalize(vNor);
   if (!gl_FrontFacing) n = -n;
   vec3 base = vCol.rgb; float em = vCol.a;
-  vec3 lit = mix(uGnd, uSky, n.y*0.5+0.5);
-  lit += uSun * max(dot(n, uSunDir), 0.0);
+  // world-space detail so large flat-coloured surfaces read as sand, rock and growth
+  float dn = vnoise(vPos * 1.9) * 0.6 + vnoise(vPos * 5.3) * 0.4;
+  float big = vnoise(vPos * 0.21);
+  base *= mix(1.0, 0.82 + 0.34 * dn, 1.0 - em) * mix(1.0, 0.9 + 0.2 * big, 1.0 - em);
+  if (n.y > 0.75 && em < 0.1) { float rip = sin(dot(vPos.xz, vec2(2.1, 1.3)) + 5.0 * vnoise(vPos * 0.7)); base *= 1.0 + 0.06 * rip * smoothstep(0.75, 0.95, n.y); }
+  vec3 sd = uUnder > 0.5 ? waterSunDir() : normalize(uSunDir);
+  float hemiT = n.y * 0.5 + 0.5;
+  vec3 lit = mix(uGnd, uSky, hemiT) * (0.75 + 0.25 * hemiT);
+  float ndl = dot(n, sd);
+  lit += uSun * max((ndl + 0.2) / 1.2, 0.0) * 0.85;
+  vec3 H = normalize(sd + V);
+  vec3 spec = uSun * pow(max(dot(n, H), 0.0), 40.0) * 0.45 * step(0.0, ndl);
   if (uCaustic > 0.0) {
-    float c = sin(vPos.x*0.9 + uTime*1.3) * sin(vPos.z*0.8 - uTime*1.1) + sin((vPos.x+vPos.z)*0.55 + uTime*0.7);
-    c = max(c, 0.0) * 0.5; c *= c;
-    lit += uSun * c * uCaustic * max(n.y, 0.0);
+    float c = caustic(vPos.xz * 0.085, uTime * 0.45) + 0.6 * caustic(vPos.xz * 0.21 + 3.1, uTime * 0.6);
+    float depthFade = smoothstep(-70.0, -2.0, vPos.y);
+    lit += uSun * vec3(0.8, 1.0, 1.0) * c * uCaustic * 1.3 * max(n.y, 0.0) * depthFade;
   }
   if (uLampOn > 0.0) {
     vec3 L = uLampPos - vPos; float d = length(L); L /= max(d, 0.001);
-    float spot = smoothstep(0.80, 0.94, dot(-L, uLampDir));
+    float spot = smoothstep(0.78, 0.95, dot(-L, uLampDir));
     float att = 1.0 / (1.0 + uLampRange*d*d);
-    lit += vec3(1.0,0.96,0.86) * uLampOn * spot * att * (0.25 + 0.75*max(dot(n, L), 0.0)) * 2.2;
+    vec3 lc = vec3(1.0,0.96,0.86) * uLampOn * spot * att;
+    lit += lc * (0.25 + 0.75*max(dot(n, L), 0.0)) * 2.4;
+    spec += lc * pow(max(dot(n, normalize(L + V)), 0.0), 32.0) * 0.8;
   }
   for (int i = 0; i < 4; i++) {
     float r = uPL[i].w;
     if (r > 0.0) {
       vec3 L = uPL[i].xyz - vPos; float d = length(L);
       float att = clamp(1.0 - d / r, 0.0, 1.0); att *= att;
-      lit += uPLC[i] * att * (0.3 + 0.7*max(dot(n, L/max(d,0.001)), 0.0));
+      lit += uPLC[i] * att * (0.3 + 0.7*max(dot(n, L/max(d,0.001)), 0.0)) * 1.3;
     }
   }
-  vec3 col = mix(base * lit, base, em);
-  float dist = length(vPos - uCam);
-  float f = 1.0 - exp(-pow(dist * uFogDen, 2.0));
+  vec3 col = mix(base * lit + spec * (1.0 - em), base * (1.0 + 0.5 * em), em);
+  // rim of scattered light around silhouettes
+  float rim = pow(1.0 - max(dot(n, V), 0.0), 3.0);
+  vec3 envV = envColor(rd);
+  col += envColor(-n * 0.3 + vec3(0.0, 0.7, 0.0)) * rim * 0.35 * (1.0 - em) * uUnder;
+  // fog: underwater the red end of the spectrum is absorbed first
+  vec3 k = uUnder > 0.5 ? vec3(1.3, 1.0, 0.88) : vec3(1.0);
+  vec3 dd = dist * uFogDen * k;
+  vec3 f = 1.0 - exp(-(dd * dd));
   f *= (1.0 - 0.55*em);
   if (uSplit > 0.5 && vPos.y > 0.0) f *= 0.06;
-  col = mix(col, uFog, clamp(f, 0.0, 1.0));
+  col = mix(col, envV, clamp(f, 0.0, 1.0));
   // sonar: a pulse sweeps out, then everything inside the radius is drawn as glowing outlines through the fog
   if (uSonarA.x + uSonarA.y > 0.001) {
     float sd = length(vPos - uSonar.xyz);
@@ -399,10 +527,149 @@ function program(vs, fs, defs = '') {
   }
   return p;
 }
+// ---- background: water column / sky behind everything ----
+const BG_VS = `
+out vec2 vN;
+void main(){ vec2 p = vec2((gl_VertexID << 1) & 2, gl_VertexID & 2) * 2.0 - 1.0; vN = p; gl_Position = vec4(p, 1.0, 1.0); }`;
+const BG_FS = `
+precision highp float;
+in vec2 vN; uniform mat4 uInvVP; uniform vec3 uCam; out vec4 o;
+` + COMMON_GLSL + `
+void main(){
+  vec4 a = uInvVP * vec4(vN, -1.0, 1.0), b = uInvVP * vec4(vN, 1.0, 1.0);
+  vec3 V = normalize(b.xyz / b.w - a.xyz / a.w);
+  vec3 c = envColor(V);
+  if (uUnder > 0.5) { // faint drifting murk so open water is never a flat colour
+    float m = vnoise(V * 6.0 + vec3(0.0, uTime * 0.04, uTime * 0.02)) * 0.6 + vnoise(V * 15.0 - uTime * 0.03) * 0.4;
+    c *= 0.93 + 0.14 * m;
+  }
+  o = vec4(c, 1.0);
+}`;
+// ---- desktop post-processing: bloom, grading, underwater lens wobble, vignette ----
+const PP_VS = `
+out vec2 vUV;
+void main(){ vec2 p = vec2((gl_VertexID << 1) & 2, gl_VertexID & 2); vUV = p; gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0); }`;
+const PP_BRIGHT = `
+precision mediump float; in vec2 vUV; uniform sampler2D uTex; uniform vec2 uPx; out vec4 o;
+void main(){
+  vec3 c = texture(uTex, vUV + uPx * vec2(-1,-1)).rgb + texture(uTex, vUV + uPx * vec2(1,-1)).rgb + texture(uTex, vUV + uPx * vec2(-1,1)).rgb + texture(uTex, vUV + uPx * vec2(1,1)).rgb;
+  c *= 0.25;
+  float l = max(c.r, max(c.g, c.b));
+  float k = smoothstep(0.82, 1.0, l);
+  o = vec4(c * k, 1.0);
+}`;
+const PP_BLUR = `
+precision mediump float; in vec2 vUV; uniform sampler2D uTex; uniform vec2 uDir; out vec4 o;
+void main(){
+  vec3 c = texture(uTex, vUV).rgb * 0.2270270;
+  c += (texture(uTex, vUV + uDir * 1.3846153).rgb + texture(uTex, vUV - uDir * 1.3846153).rgb) * 0.3162162;
+  c += (texture(uTex, vUV + uDir * 3.2307692).rgb + texture(uTex, vUV - uDir * 3.2307692).rgb) * 0.0702702;
+  o = vec4(c, 1.0);
+}`;
+const PP_FINAL = `
+precision highp float; in vec2 vUV; uniform sampler2D uTex; uniform sampler2D uB1; uniform sampler2D uB2;
+uniform float uTime; uniform float uUnder; uniform float uBloom; uniform vec2 uRes; out vec4 o;
+float h(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+void main(){
+  vec2 uv = vUV;
+  if (uUnder > 0.5) uv += vec2(sin(uv.y * 22.0 + uTime * 1.6), cos(uv.x * 18.0 + uTime * 1.3)) * 0.0011;
+  vec2 dc = uv - 0.5; float r2 = dot(dc, dc);
+  vec3 c;
+  c.r = texture(uTex, uv - dc * 0.006 * r2).r;
+  c.g = texture(uTex, uv).g;
+  c.b = texture(uTex, uv + dc * 0.006 * r2).b;
+  vec3 bl = texture(uB1, uv).rgb * 0.85 + texture(uB2, uv).rgb * 1.1;
+  c += bl * uBloom;
+  // grade: gentle filmic shoulder, a little contrast and saturation
+  c = c * 0.86;
+  c = (c * (2.51 * c + 0.03)) / (c * (2.43 * c + 0.59) + 0.14) * 1.05;
+  float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
+  c = mix(vec3(l), c, 1.14);
+  c = mix(c, c * c * (3.0 - 2.0 * c), 0.18);
+  // vignette + film dither
+  c *= mix(1.0, 0.62, smoothstep(0.08, 0.62, r2 * 1.6));
+  c += (h(gl_FragCoord.xy + fract(uTime) * 61.0) - 0.5) / 255.0 * 1.5;
+  o = vec4(clamp(c, 0.0, 1.0), 1.0);
+}`;
 const PROG = {
   world: program(WORLD_VS, WORLD_FS),
   inst: program(WORLD_VS, WORLD_FS, '#define INST\n'),
-  ui: program(UI_VS, UI_FS)
+  ui: program(UI_VS, UI_FS),
+  bg: program(BG_VS, BG_FS),
+  bright: program(PP_VS, PP_BRIGHT),
+  blur: program(PP_VS, PP_BLUR),
+  final: program(PP_VS, PP_FINAL)
+};
+const EMPTY_VAO = gl.createVertexArray();
+// render targets for the desktop post chain (VR draws straight into the headset's framebuffer)
+const POST = {
+  on: true, ok: false, w: 0, h: 0,
+  mkTex(w, h) {
+    const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    const f = gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER, f);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t, 0);
+    return { t, f, w, h };
+  },
+  free() {
+    for (const k of ['scene', 'a1', 'b1', 'a2', 'b2']) if (this[k]) { gl.deleteTexture(this[k].t); gl.deleteFramebuffer(this[k].f); this[k] = null; }
+    if (this.msFB) { gl.deleteFramebuffer(this.msFB); gl.deleteRenderbuffer(this.msC); gl.deleteRenderbuffer(this.msD); this.msFB = null; }
+  },
+  ensure(w, h) {
+    if (this.w === w && this.h === h && this.ok) return true;
+    this.free(); this.w = w; this.h = h; this.ok = false;
+    try {
+      const samples = Math.min(4, gl.getParameter(gl.MAX_SAMPLES) || 0);
+      this.msFB = gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER, this.msFB);
+      this.msC = gl.createRenderbuffer(); gl.bindRenderbuffer(gl.RENDERBUFFER, this.msC);
+      gl.renderbufferStorageMultisample(gl.RENDERBUFFER, samples, gl.RGBA8, w, h);
+      gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.RENDERBUFFER, this.msC);
+      this.msD = gl.createRenderbuffer(); gl.bindRenderbuffer(gl.RENDERBUFFER, this.msD);
+      gl.renderbufferStorageMultisample(gl.RENDERBUFFER, samples, gl.DEPTH_COMPONENT24, w, h);
+      gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, this.msD);
+      if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) throw new Error('ms fb');
+      this.scene = this.mkTex(w, h);
+      const w1 = Math.max(1, w >> 2), h1 = Math.max(1, h >> 2), w2 = Math.max(1, w >> 3), h2 = Math.max(1, h >> 3);
+      this.a1 = this.mkTex(w1, h1); this.b1 = this.mkTex(w1, h1); this.a2 = this.mkTex(w2, h2); this.b2 = this.mkTex(w2, h2);
+      if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) throw new Error('tex fb');
+      this.ok = true;
+    } catch (e) { console.warn('post-processing off:', e); this.free(); this.on = false; }
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.bindRenderbuffer(gl.RENDERBUFFER, null);
+    return this.ok;
+  },
+  pass(p, dst, src, setup) {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, dst ? dst.f : null);
+    gl.viewport(0, 0, dst ? dst.w : this.w, dst ? dst.h : this.h);
+    gl.useProgram(p); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, src.t); gl.uniform1i(p.u.uTex, 0);
+    if (setup) setup(p.u);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  },
+  finish() {
+    gl.bindFramebuffer(gl.READ_FRAMEBUFFER, this.msFB); gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, this.scene.f);
+    gl.blitFramebuffer(0, 0, this.w, this.h, 0, 0, this.w, this.h, gl.COLOR_BUFFER_BIT, gl.NEAREST);
+    gl.bindFramebuffer(gl.READ_FRAMEBUFFER, null); gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, null);
+    gl.disable(gl.DEPTH_TEST); gl.disable(gl.BLEND); gl.disable(gl.CULL_FACE); gl.depthMask(false);
+    gl.bindVertexArray(EMPTY_VAO);
+    const s = this.scene;
+    this.pass(PROG.bright, this.a1, s, u => gl.uniform2f(u.uPx, 1 / s.w, 1 / s.h));
+    const blur = (a, b, it) => { for (let i = 0; i < it; i++) {
+      this.pass(PROG.blur, b, a, u => gl.uniform2f(u.uDir, 1.4 / a.w, 0));
+      this.pass(PROG.blur, a, b, u => gl.uniform2f(u.uDir, 0, 1.4 / a.h)); } };
+    blur(this.a1, this.b1, 2);
+    this.pass(PROG.blur, this.a2, this.a1, u => gl.uniform2f(u.uDir, 0.5 / this.a1.w, 0.5 / this.a1.h));
+    blur(this.a2, this.b2, 2);
+    const p = PROG.final;
+    this.pass(p, null, s, u => {
+      gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, this.a1.t); gl.uniform1i(u.uB1, 1);
+      gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, this.a2.t); gl.uniform1i(u.uB2, 2);
+      gl.uniform1f(u.uTime, ENV.time); gl.uniform1f(u.uUnder, ENV.under || 0); gl.uniform1f(u.uBloom, ENV.under ? 0.75 : 0.28);
+      gl.uniform2f(u.uRes, this.w, this.h);
+    });
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindVertexArray(null); gl.depthMask(true); gl.enable(gl.DEPTH_TEST); gl.enable(gl.CULL_FACE);
+  }
 };
 
 function bindMeshAttribs(vbo) {
@@ -550,6 +817,7 @@ const R = {
     gl.uniform4fv(u.uPL, ENV.pl); gl.uniform3fv(u.uPLC, ENV.plc);
     gl.uniform1f(u.uAlpha, 1);
     gl.uniform1f(u.uSplit, ENV.split || 0);
+    gl.uniform1f(u.uUnder, ENV.under || 0); gl.uniform1f(u.uMat, 0); gl.uniform1f(u.uDay, ENV.day ?? 1);
     const so = ENV.sonar; gl.uniform4f(u.uSonar, so ? so.x : 0, so ? so.y : 0, so ? so.z : 0, so ? so.r : 0); gl.uniform2f(u.uSonarA, so ? so.wave : 0, so ? so.glow : 0); gl.uniform4f(u.uXray, 0, 0, 0, 0);
   },
   culled(it, cam) {
@@ -570,8 +838,20 @@ const R = {
     gl.bindVertexArray(it.mesh.vao);
     gl.drawArrays(gl.TRIANGLES, 0, it.mesh.count);
   },
+  renderBG(proj, view, cam) {
+    const vp = this._vp || (this._vp = new Float32Array(16)), inv = this._ivp || (this._ivp = new Float32Array(16));
+    M4.mul(vp, proj, view); M4.invert(inv, vp);
+    const p = PROG.bg; gl.useProgram(p);
+    gl.uniformMatrix4fv(p.u.uInvVP, false, inv); gl.uniform3f(p.u.uCam, cam.x, cam.y, cam.z);
+    gl.uniform3fv(p.u.uFog, ENV.fog); gl.uniform3fv(p.u.uSun, ENV.sun); gl.uniform3fv(p.u.uSunDir, ENV.sunDir);
+    gl.uniform1f(p.u.uUnder, ENV.under || 0); gl.uniform1f(p.u.uTime, ENV.time); gl.uniform1f(p.u.uDay, ENV.day ?? 1);
+    gl.disable(gl.DEPTH_TEST); gl.depthMask(false); gl.disable(gl.CULL_FACE); gl.disable(gl.BLEND);
+    gl.bindVertexArray(EMPTY_VAO); gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.depthMask(true); gl.enable(gl.DEPTH_TEST);
+  },
   renderView(proj, view, cam) {
     this.fwd.set(-view[2], -view[6], -view[10]).norm();
+    this.renderBG(proj, view, cam);
     let p = PROG.world;
     gl.useProgram(p); this.setGlobals(p, proj, view, cam);
     gl.enable(gl.DEPTH_TEST); gl.depthFunc(gl.LEQUAL); gl.depthMask(true); gl.disable(gl.BLEND); gl.enable(gl.CULL_FACE);
@@ -594,10 +874,17 @@ const R = {
     p = PROG.world; gl.useProgram(p); this.setGlobals(p, proj, view, cam);
     if (trans.length) {
       gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA); gl.depthMask(false); gl.disable(gl.CULL_FACE);
+      // far to near so overlapping glass, water and light shafts blend in the right order
+      for (const it of trans) { const dx = it.cx - cam.x, dy = it.cy - cam.y, dz = it.cz - cam.z; it._d = it.mat === 1 ? 1e9 : dx * dx + dy * dy + dz * dz; }
+      trans.sort((a, b) => b._d - a._d);
       for (const it of trans) {
         if (this.culled(it, cam)) continue;
         gl.uniform1f(p.u.uAlpha, it.alpha);
+        if (it.mat) gl.uniform1f(p.u.uMat, it.mat);
+        if (it.additive) gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
         this.drawItem(p, it);
+        if (it.additive) gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        if (it.mat) gl.uniform1f(p.u.uMat, 0);
       }
       gl.uniform1f(p.u.uAlpha, 1);
       gl.depthMask(true); gl.enable(gl.CULL_FACE); gl.disable(gl.BLEND);
@@ -935,7 +1222,7 @@ defM('laser', m => m.box([0, 0, -0.5], [0.004, 0.004, 1], [0.4, 1, 1], { em: 1 }
 defM('bubble', m => m.ell([0, 0, 0], 1, 1, 1, [0.75, 0.95, 1], { seg: 6, rings: 4, em: 0.5 }));
 defM('speck', m => m.box([0, 0, 0], [1, 1, 1], [0.85, 0.95, 0.9], { em: 0.7 }));
 defM('pulse', m => m.ell([0, 0, 0], 1, 1, 1, [0.5, 0.8, 1], { seg: 12, rings: 8, em: 1 }));
-defM('shaft', m => m.box([0, -20, 0], [2.5, 40, 2.5], [1, 1, 0.9], { em: 1 }));
+defM('shaft', m => m.cyl([0, -32, 0], 1.0, 2.2, 64, [1, 1, 0.9], { em: 1, seg: 14, caps: false }));
 defM('water', m => {
   const S = 700, N = 14;
   for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) {
@@ -1564,6 +1851,111 @@ defM('pod_anchor', m => {
   m.box([0, 0.25, 0], [0.9, 0.5, 0.9], [0.4, 0.42, 0.45]); m.ring([0, 0.55, 0], 0.18, 0.05, C.yellow, { seg: 10, ms: 4, r: [PI / 2, 0, 0] });
   m.ell([0, 0.9, 0], 0.12, 0.12, 0.12, [1, 0.5, 0.1], { em: 0.9, seg: 6, rings: 3 });
 });
+// ---------------- Odyssey-7 main hull: a 210 m colony ship run aground, towering out of the sea ----------------
+// Local frame: origin at the waterline over the ship's centre, bow toward -Z. Built in two states:
+// intact (days 1-3, lit and sealed) and after the reactor blast (breached, burning, open inside).
+const SHIP = { hw: 20, wall: 1.5, bot: -40, floor: -37, ceil: -2, deck: 30, midZ: 60, bowZ: 115,
+  breach: { z0: -12, z1: 22, y0: -34, y1: -6 } };
+function odysseyModel(m, blown) {
+  const S = SHIP, hullC = [0.74, 0.76, 0.79], hullD = [0.5, 0.52, 0.56], scorch = [0.09, 0.08, 0.08], stripe = C.orange;
+  const rng = mulberry(blown ? 712 : 711);
+  const hc = (z, y) => blown && Math.abs(z - (S.breach.z0 + S.breach.z1) / 2) < 45 && rng() < 0.55 ? mixc(hullD, scorch, 0.6 + rng() * 0.4) : ((Math.floor(z / 10) + Math.floor(y / 7)) % 3 === 0 ? hullD : hullC);
+  // midsection: hollow so the inside can be explored once it is torn open
+  const zs = 10, ys = 7;
+  for (let z = -S.midZ; z < S.midZ; z += zs) for (let y = S.bot; y < S.deck; y += ys) {
+    const h = Math.min(ys, S.deck - y), cz = z + zs / 2, cy = y + h / 2;
+    m.box([-S.hw + S.wall / 2, cy, cz], [S.wall, h, zs], hc(cz, cy));
+    const inBreach = blown && cz > S.breach.z0 && cz < S.breach.z1 && cy > S.breach.y0 && cy < S.breach.y1;
+    if (!inBreach) m.box([S.hw - S.wall / 2, cy, cz], [S.wall, h, zs], hc(cz, cy));
+  }
+  m.box([0, (S.bot + S.floor) / 2, 0], [S.hw * 2, S.floor - S.bot, S.midZ * 2], hullD);
+  m.box([0, (S.ceil + S.deck) / 2, 0], [S.hw * 2, S.deck - S.ceil, S.midZ * 2], hullC);
+  for (const z of [-S.midZ, S.midZ]) m.box([0, (S.bot + S.deck) / 2, z], [S.hw * 2, S.deck - S.bot, 1.5], hullD);
+  // orange waterline band + hull ribs
+  for (const sx of [-1, 1]) {
+    m.box([sx * (S.hw + 0.05), 0, 0], [0.25, 2.2, S.midZ * 2], stripe);
+    for (let z = -S.midZ; z <= S.midZ; z += 20) m.box([sx * (S.hw + 0.3), (S.bot + S.deck) / 2, z], [0.6, S.deck - S.bot, 1.2], hullD);
+  }
+  // rows of windows along both sides (lit while the crew systems still run)
+  for (const sx of [-1, 1]) for (const wy of [5, 10, 15, 20, 25]) for (let z = -100; z <= 100; z += 4) {
+    if (z < -S.midZ && wy > S.deck - 4) continue;
+    const lit = !blown && rng() < 0.8, k = z < -S.midZ ? Math.min(5, Math.floor((-z - S.midZ) / 7.5)) : 0, w = z < -S.midZ ? S.hw * (1 - k * 0.14) : S.hw;
+    if (z < -S.midZ && wy < S.bot + 2 + k * 4.5 + 1) continue;
+    m.box([sx * (w + 0.1), wy, z], [0.2, 1.1, 2.2], lit ? [1, 0.85, 0.55] : [0.12, 0.13, 0.15], { em: lit ? 0.85 : 0 });
+  }
+  // bow: stepped taper rising out of the water
+  for (let k = 0; k < 6; k++) {
+    const z0 = -S.midZ - k * 7.5, w = S.hw * 2 * (1 - k * 0.14), b = S.bot + 2 + k * 4.5, t = S.deck + k * 1.2;
+    m.box([0, (b + t) / 2, z0 - 3.75], [w, t - b, 7.5], k % 2 ? hullC : hullD);
+    m.box([0, 0, z0 - 3.75], [w + 0.3, 2.2, 7.2], stripe);
+  }
+  m.box([0, S.deck + 8, -S.midZ - 42], [4, 6, 4], hullD);
+  // stern engine block with three huge thrusters
+  m.box([0, (S.bot + S.deck + 2) / 2, (S.midZ + S.bowZ) / 2 - 5], [S.hw * 2, S.deck + 2 - S.bot, S.bowZ - S.midZ - 10], hullC);
+  for (const [x, y] of [[-11, -8], [11, -8], [0, -22]]) {
+    m.cyl([x, y, S.bowZ - 4], 5.5, 7.5, 12, [0.3, 0.32, 0.35], { r: [RX, 0, 0], seg: 16, capCol: blown ? [0.08, 0.08, 0.08] : [0.35, 0.8, 1], capEm: blown ? 0 : 0.9 });
+    m.ring([x, y, S.bowZ + 2.2], 7.4, 0.6, C.steelDark, { r: [PI / 2, 0, 0], seg: 18, ms: 4 });
+  }
+  // command tower near the stern
+  m.box([0, S.deck + 12, 52], [24, 24, 26], hullC);
+  m.box([0, S.deck + 24.5, 48], [20, 1, 20], hullD);
+  m.box([0, S.deck + 19, 38.8], [22, 3, 0.4], blown ? [0.1, 0.1, 0.12] : [0.55, 0.9, 1], { em: blown ? 0 : 0.7 });
+  if (!blown) {
+    m.cyl([0, S.deck + 38, 54], 0.6, 0.35, 28, C.steelDark, { seg: 8 });
+    m.ell([0, S.deck + 52.5, 54], 0.8, 0.8, 0.8, [1, 0.15, 0.1], { em: 1, seg: 8, rings: 4 });
+    m.ell([6, S.deck + 30, 56], 4, 1.2, 4, C.white, { seg: 12, rings: 4, hemi: true, r: [0.5, 0, 0] });
+  } else {
+    m.cyl([1.5, S.deck + 29, 54], 0.6, 0.45, 10, scorch, { seg: 8, r: [0, 0, 0.5] });
+  }
+  // habitat ring around the hull
+  const ringZ = -30, RR = 36;
+  if (!blown) m.ring([0, 0, ringZ], RR, 2.4, hullC, { r: [PI / 2, 0, 0], seg: 36, ms: 6 });
+  else for (let i = 0; i < 36; i++) if (i < 9 || i > 15) { const a = TAU * (i + 0.5) / 36; m.box([Math.cos(a) * RR, Math.sin(a) * RR, ringZ], [4.6, 4.6, 4.8], i % 2 ? hullC : scorch, { r: [0, 0, a] }); }
+  for (let i = 0; i < 4; i++) { const a = PI / 4 + i * PI / 2; if (blown && i === 1) continue; m.box([Math.cos(a) * (RR + S.hw) / 2, Math.sin(a) * (RR + S.hw) / 2, ringZ], [RR - S.hw + 2, 1.8, 1.8], hullD, { r: [0, 0, a] }); }
+  // deck cargo
+  for (let i = 0; i < 14; i++) {
+    const x = -12 + (i % 4) * 8, z = -50 + Math.floor(i / 4) * 14, h = 2.6;
+    const col = [[0.9, 0.45, 0.12], [0.2, 0.45, 0.8], [0.85, 0.8, 0.2], [0.55, 0.57, 0.6]][i % 4];
+    m.box([x, S.deck + h / 2, z], [6.5, h, 12], blown && i % 3 === 0 ? scorch : col);
+    if (i % 2 === 0) m.box([x, S.deck + h * 1.5, z], [6.5, h, 12], blown ? scorch : col);
+  }
+  if (blown) {
+    // torn plating around the breach, scorch and fires
+    const B = S.breach;
+    for (let i = 0; i < 26; i++) {
+      const t = i / 26, edge = rng() < 0.5;
+      const z = edge ? lerp(B.z0, B.z1, rng()) : (rng() < 0.5 ? B.z0 : B.z1) + rr2(rng, -2, 2);
+      const y = edge ? (rng() < 0.5 ? B.y0 : B.y1) + rr2(rng, -2, 2) : lerp(B.y0, B.y1, rng());
+      m.box([S.hw + rr2(rng, 0.5, 3), y, z], [rr2(rng, 0.3, 0.8), rr2(rng, 2, 5), rr2(rng, 2, 6)], t < 0.5 ? scorch : hullD, { r: [rr2(rng, -0.8, 0.8), rr2(rng, -0.6, 0.6), rr2(rng, -0.8, 0.8)] });
+    }
+    for (let i = 0; i < 18; i++) { const x = rr2(rng, -14, 14), z = rr2(rng, -55, 45); m.box([x, S.deck + 0.05, z], [rr2(rng, 3, 9), 0.1, rr2(rng, 3, 9)], scorch); }
+    for (let i = 0; i < 7; i++) {
+      const x = rr2(rng, -12, 12), z = rr2(rng, -50, 40), s = rr2(rng, 0.8, 1.6);
+      m.ell([x, S.deck + 1.2 * s, z], 1.4 * s, 2.2 * s, 1.4 * s, [1, 0.45, 0.08], { em: 1, seg: 7, rings: 4 });
+      m.ell([x, S.deck + 2.6 * s, z], 0.8 * s, 1.6 * s, 0.8 * s, [1, 0.8, 0.25], { em: 1, seg: 6, rings: 3 });
+    }
+  }
+  // ---- interior: flooded cargo hold ----
+  const IN = [0.36, 0.38, 0.42];
+  m.box([-10, -20.5, 0], [12, 0.8, 100], IN); // catwalk deck along the port side
+  for (let z = -45; z <= 45; z += 15) m.cyl([-10, (S.floor - 20.5) / 2, z], 0.4, 0.4, -20.5 - S.floor, C.steelDark, { seg: 6 });
+  for (let i = 0; i < 12; i++) {
+    const x = rr2(rng, -2, 12), z = rr2(rng, -50, 50), r = rng() * 0.6;
+    const col = [[0.85, 0.42, 0.12], [0.18, 0.4, 0.75], [0.5, 0.52, 0.56]][i % 3];
+    m.box([x, S.floor + 1.6, z], [3.2, 3.2, 6.5], col, { r: [0, r, blown ? rr2(rng, -0.2, 0.2) : 0] });
+  }
+  for (let z = -55; z <= 55; z += 10) m.box([0, S.ceil - 0.6, z], [2.4, 0.4, 1.2], [1, 0.95, 0.8], { em: blown ? 0.15 : 0.6 });
+  // ruptured drive core at the aft end of the hold (radiation source)
+  m.cyl([4, S.floor + 6, 48], 4, 4, 12, [0.28, 0.3, 0.32], { seg: 14 });
+  for (const y of [2, 6, 10]) m.cyl([4, S.floor + y, 48], 4.1, 4.1, 0.6, blown ? [0.5, 1, 0.25] : [0.4, 0.7, 1], { seg: 14, em: 1 });
+}
+defM('odyssey', m => odysseyModel(m, false));
+defM('odyssey_blown', m => odysseyModel(m, true));
+defM('blast_wave', m => m.ell([0, 0, 0], 1, 1, 1, [1, 0.6, 0.25], { seg: 18, rings: 10, em: 1 }));
+defM('loot_crate', m => {
+  m.box([0, 0.45, 0], [1.4, 0.9, 0.9], [0.85, 0.5, 0.12]); m.box([0, 0.92, 0], [1.45, 0.08, 0.95], C.steelDark);
+  m.box([0, 0.5, -0.46], [0.5, 0.18, 0.04], [0.3, 1, 0.5], { em: 1 });
+});
 defM('wreck_hull', m => {
   m.ell([0, 0, 0], 7, 5.5, 20, [0.6, 0.62, 0.65], { seg: 16, rings: 10, n: 0.03, colFn: (a, b) => (Math.floor(b * 16) % 5 === 0 ? [0.45, 0.47, 0.5] : (a > 0.48 && a < 0.53 ? C.orange : [0.6, 0.62, 0.65])), skip: (i, j) => i >= 8 });
   for (let k = 0; k < 4; k++) m.ring([0, 0, 15 + k * 2.2], 5.2 - k * 0.6, 0.25, C.steelDark, { r: [PI / 2, 0, 0], seg: 14, ms: 4 });
@@ -1807,7 +2199,7 @@ const FISH_KINDS = Object.keys(SPECIES).filter(k => SPECIES[k].kind === 'fish');
 const LOGS = {
   pod1: { t: 'Escape Pod 3 — Automated Report', x: 'Odyssey-7 lost propulsion in orbit of Nerathis-9 after an unidentified energy discharge struck the hull. This pod separated during re-entry and settled on a shallow reef.\n\nLife support: operational. Radio: offline. Three hull breaches have shorted the transmitter.\n\nRecommended: break reef nodules with the Salvage Knife for titanium and copper, then use the pod fabricator to make a Patch Welder.' },
   okafor: { t: 'Crew Log — Ensign Okafor', x: 'If anyone finds this: the reef here is kind. The puffy blue fish scatter when you get close, but they are good eating once cooked. Do not trust the red ones with the teeth. They wait where the reef drops off.\n\nI am heading south toward the smoke on the horizon. That is where the ship went down.' },
-  pod2: { t: 'Pod Radio — Signals', x: 'Transmitter restored. Two signals detected.\n\n1) Odyssey-7 primary hull, about 170 m south. Reactor containment failing; radiation present. A Radiation Suit (lead + synthetic fiber) is advised.\n\n2) An unknown repeating signal far to the west. Origin: not human.' },
+  pod2: { t: 'Pod Radio — Signals', x: 'Transmitter restored. Two signals detected.\n\n1) Odyssey-7 main hull, aground about 550 m away — you can see it towering above the waves. Reactor containment failing; it will not hold for long. Radiation present at the debris field. A Radiation Suit (lead + synthetic fiber) is advised.\n\n2) An unknown repeating signal far to the west. Origin: not human.' },
   lune: { t: 'Survivor Log — Dr. Ines Lune', x: 'The vine forest grows impossibly tall. The seed clusters glow and break down into a decent silicone.\n\nI rigged a depth rebreather from the pod spares. Schematic attached. It keeps the gas mix steady so deep dives do not burn through a tank.\n\nSomething long and green hunts between the stalks. Move when it moves.' },
   damage: { t: 'Odyssey-7 Damage Report', x: 'Hull breach across decks 2–6. Reactor shielding compromised; radiation within about 80 m of the core.\n\nThe bridge sealed itself on impact. A Plasma Cutter (schematic attached) will open sealed bulkheads. It needs a diamond, which can be found in dark basalt nodules east of the reef.\n\nThe captain\'s final log and the navigation core are on the bridge.' },
   varga: { t: 'Captain Varga — Final Log', x: 'We were not hit by debris. A beam came up from the planet, from a tower far to the southeast. It tracked us and fired twice. Whatever built it wanted nothing to leave this world.\n\nIf you survive this: the Odyssey\'s emergency launch schematics are in this core. A floating platform, an engine, a fuel core, a hull and navigation.\n\nBuild the rocket. But do not light it until that tower is silent.' },
@@ -1821,9 +2213,9 @@ const LOGS = {
 };
 
 // ===================== 07 WORLD =====================
-const CH = 40, CELLS = 16, BLEND = 30;
+const CH = 40, CELLS = 20, BLEND = 30;
 const BIOMES = {
-  reef: { n: 'Sunlit Reef', fog: [0.11, 0.46, 0.56], den: 0.016, f1: [0.86, 0.78, 0.58], f2: [0.76, 0.68, 0.5], rock: [0.62, 0.56, 0.48],
+  reef: { n: 'Sunlit Reef', fog: [0.11, 0.46, 0.56], den: 0.016, f1: [0.8, 0.7, 0.5], f2: [0.68, 0.58, 0.42], rock: [0.56, 0.5, 0.43],
     props: [['coral_brain', 5], ['coral_brain2', 3], ['coral_table', 3], ['coral_tube', 5, 1, 1.4, 1], ['coral_branch', 5, 0.8, 1.5, 1], ['seafan', 3], ['anemone', 4, 0.8, 1.3, 1], ['seagrass', 12, 0.8, 1.4, 1], ['rock_a', 2, 0.6, 1.4]], pn: 55,
     nodes: [['reef_nodule', 6], ['quartz', 2], ['salt', 2], ['grit_nodule', 0.6], ['vine_sprout', 0.8]], nn: 9 },
   vine: { n: 'Vinewood Forest', fog: [0.06, 0.28, 0.27], den: 0.022, f1: [0.3, 0.36, 0.24], f2: [0.22, 0.28, 0.19], rock: [0.32, 0.34, 0.3],
@@ -1852,8 +2244,8 @@ const BIOMES = {
     nodes: [['sulfur', 3], ['uraninite', 2], ['magma_core', 0.5], ['basalt_nodule', 1]], nn: 7 },
   void: { n: 'The Void', fog: [0.01, 0.03, 0.08], den: 0.02, f1: [0.05, 0.05, 0.07], f2: [0.04, 0.04, 0.05], rock: [0.06, 0.06, 0.07], props: [], pn: 0, nodes: [], nn: 0 }
 };
-// the world is WS times bigger than the first version (about 1.6 km across)
-const WS = 2, WORLD_R = 445 * WS;
+// the world is WS times bigger than the first version (about 2.7 km across)
+const WS = 3, WORLD_R = 445 * WS;
 const SITES = [
   ['reef', 0 * WS, 0 * WS], ['reef', 45 * WS, -35 * WS], ['reef', -30 * WS, 35 * WS],
   ['vine', 0 * WS, -145 * WS], ['vine', -85 * WS, -115 * WS], ['vine', 80 * WS, -125 * WS],
@@ -1907,9 +2299,10 @@ const POIS = [
   { id: 'outpost', x: -165 * WS, z: -20 * WS, R: 21, off: 0 },
   { id: 'lab', x: -260 * WS, z: 165 * WS, R: 26, off: 0 },
   { id: 'sanctum', x: -255 * WS, z: -215 * WS, R: 66, off: 0 },
-  { id: 'spire', x: 290 * WS, z: 230 * WS, R: 32, off: 0 }
+  { id: 'spire', x: 290 * WS, z: 230 * WS, R: 32, off: 0 },
+  { id: 'ship', x: 48 * WS, z: 172 * WS, R: 112, off: 0, fixH: -39 } // Odyssey-7 main hull runs aground here
 ];
-for (const p of POIS) p.h = biomeH(biomeQuery(p.x, p.z).b1, p.x, p.z) + p.off;
+for (const p of POIS) p.h = p.fixH ?? biomeH(biomeQuery(p.x, p.z).b1, p.x, p.z) + p.off;
 const POI = {}; for (const p of POIS) POI[p.id] = p;
 function heightAt(x, z) {
   let h = rawHeight(x, z);
@@ -1925,7 +2318,7 @@ function isLava(x, z) { return biomeAt(x, z) === 'furnace' && lavaN(x, z) > 0.42
 const VENTS = [];
 (() => {
   const rng = mulberry(777);
-  const want = { crimson: 14, furnace: 24 };
+  const want = { crimson: 30, furnace: 50 };
   for (const b in want) {
     let n = 0, guard = 0;
     while (n < want[b] && guard++ < 4000) {
@@ -1972,32 +2365,42 @@ function genChunk(cx, cz) {
   if (CHUNKS.has(key)) return CHUNKS.get(key);
   const x0 = cx * CH, z0 = cz * CH, st = CH / CELLS;
   const base = new MB(), detail = new MB();
-  const H = [];
-  for (let i = 0; i <= CELLS; i++) { const row = []; for (let j = 0; j <= CELLS; j++) row.push(heightAt(x0 + i * st, z0 + j * st)); H.push(row); }
-  for (let i = 0; i < CELLS; i++) for (let j = 0; j < CELLS; j++) {
-    const xa = x0 + i * st, za = z0 + j * st, xb = xa + st, zb = za + st;
-    const mx = xa + st / 2, mz = za + st / 2;
-    const q = biomeQuery(mx, mz), B = BIOMES[Math.hypot(mx, mz) > 400 * WS ? 'void' : q.b1];
-    const nv = noise2(mx * 0.15, mz * 0.15, 33) * 0.5 + 0.5;
-    let col = mixc(B.f1, B.f2, nv);
-    if (q.b2 && q.d2 - q.d1 < BLEND && Math.hypot(mx, mz) <= 400) { const w = 0.5 + 0.5 * smooth(0, BLEND, q.d2 - q.d1); col = mixc(mixc(BIOMES[q.b2].f1, BIOMES[q.b2].f2, nv), col, w); }
-    const p00 = [xa, H[i][j], za], p10 = [xb, H[i + 1][j], za], p01 = [xa, H[i][j + 1], zb], p11 = [xb, H[i + 1][j + 1], zb];
-    const lava = B === BIOMES.furnace && lavaN(mx, mz) > 0.42;
-    for (const t of [[p00, p11, p10], [p00, p01, p11]]) {
-      const ref = [t[0][0], t[0][1] - 10, t[0][2]];
-      const ux = t[1][0] - t[0][0], uy = t[1][1] - t[0][1], uz = t[1][2] - t[0][2], vx = t[2][0] - t[0][0], vy = t[2][1] - t[0][1], vz = t[2][2] - t[0][2];
-      const ny = Math.abs(uz * vx - ux * vz) / (Math.hypot(uy * vz - uz * vy, uz * vx - ux * vz, ux * vy - uy * vx) || 1);
-      let c = col; if (ny < 0.72) c = mixc(B.rock, col, smooth(0.45, 0.72, ny));
-      if (lava) base.tri(t[0], t[1], t[2], [1, 0.38 + 0.2 * nv, 0.06], 1, 0, ref);
-      else base.tri(t[0], t[1], t[2], c, 0, 0, ref);
+  // height grid with a one-cell border so every vertex gets a smooth normal from its neighbours
+  const H = [], N = CELLS + 3;
+  for (let i = 0; i < N; i++) { const row = new Float32Array(N); for (let j = 0; j < N; j++) row[j] = heightAt(x0 + (i - 1) * st, z0 + (j - 1) * st); H.push(row); }
+  const VTX = [];
+  for (let i = 0; i <= CELLS; i++) {
+    const vr = [];
+    for (let j = 0; j <= CELLS; j++) {
+      const gi = i + 1, gj = j + 1, x = x0 + i * st, z = z0 + j * st, y = H[gi][gj];
+      let nx = -(H[gi + 1][gj] - H[gi - 1][gj]) / (2 * st), nz = -(H[gi][gj + 1] - H[gi][gj - 1]) / (2 * st), ny = 1;
+      const l = Math.hypot(nx, ny, nz); nx /= l; ny /= l; nz /= l;
+      const far = Math.hypot(x, z) > 400 * WS;
+      const q = biomeQuery(x, z), bid = far ? 'void' : q.b1, B = BIOMES[bid];
+      const nv = noise2(x * 0.15, z * 0.15, 33) * 0.5 + 0.5, nv2 = noise2(x * 0.045, z * 0.045, 34) * 0.5 + 0.5;
+      let col = mixc(B.f1, B.f2, nv * 0.7 + nv2 * 0.3);
+      if (!far && q.b2 && q.d2 - q.d1 < BLEND) { const w = 0.5 + 0.5 * smooth(0, BLEND, q.d2 - q.d1); col = mixc(mixc(BIOMES[q.b2].f1, BIOMES[q.b2].f2, nv), col, w); }
+      if (ny < 0.8) col = mixc(B.rock, col, smooth(0.5, 0.8, ny));
+      // hollows collect darker silt, crests catch light
+      const curv = (H[gi + 1][gj] + H[gi - 1][gj] + H[gi][gj + 1] + H[gi][gj - 1] - 4 * y) / (st * st);
+      col = mulc(col, clamp(1 - curv * 0.35, 0.78, 1.12));
+      let em = 0;
+      if (bid === 'furnace') { const lv = lavaN(x, z); if (lv > 0.36) { const k = smooth(0.36, 0.46, lv); col = mixc(col, [1, 0.36 + 0.22 * nv, 0.05], k); em = k; } }
+      vr.push([x, y, z, nx, ny, nz, col[0], col[1], col[2], em]);
     }
+    VTX.push(vr);
+  }
+  const A = base.a, pv = v => A.push(v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], v[8], v[9], 0);
+  for (let i = 0; i < CELLS; i++) for (let j = 0; j < CELLS; j++) {
+    const p00 = VTX[i][j], p10 = VTX[i + 1][j], p01 = VTX[i][j + 1], p11 = VTX[i + 1][j + 1];
+    pv(p00); pv(p11); pv(p10); pv(p00); pv(p01); pv(p11);
   }
   const rng = mulberry(hash2(cx, cz, 99) * 4294967296);
   const inPOI = (x, z, k) => POIS.some(p => (x - p.x) ** 2 + (z - p.z) ** 2 < (p.R * k) ** 2);
-  for (let k = 0; k < 90; k++) {
+  for (let k = 0; k < 150; k++) {
     const x = x0 + rng() * CH, z = z0 + rng() * CH;
     const bid = biomeAt(x, z), B = BIOMES[bid];
-    if (!B.pn || rng() > B.pn / 90) continue;
+    if (!B.pn || rng() > Math.min(150, B.pn * 1.6) / 150) continue;
     if (inPOI(x, z, bid === 'reef' ? 0.5 : 0.75)) continue;
     const e = pickW(rng, B.props), s = lerp(e[2] || 0.8, e[3] || 1.3, rng());
     const y = heightAt(x, z) - 0.05 * s;
@@ -2024,7 +2427,7 @@ function unloadChunk(c) {
   for (const it of c.items) { R.remove(it); it.mesh.destroy(); }
   c.items = []; c.unloaded = true;
 }
-const LOAD_R = 190, UNLOAD_R = 250;
+const LOAD_R = 230, UNLOAD_R = 290;
 function streamChunks(pos, budget = 1) {
   const pcx = Math.floor(pos.x / CH), pcz = Math.floor(pos.z / CH), rC = Math.ceil(LOAD_R / CH);
   let best = null, bd = 1e9;
@@ -2114,7 +2517,7 @@ function initStructures() {
   placeStatic('tank_glass', new V(L.x, L.h, L.z), PI, 1, { trans: true, alpha: 0.3 });
   COLLIDERS.push({ t: 'shell', c: new V(L.x, L.h, L.z), R: 12, H: 8, gapDir: -PI / 2, gapW: 0.2, gapH: 4, open: () => G.flags.labOpen });
   // Sanctum (gap faces the glowing reef)
-  const S = P.sanctum, aL = 8.5 / 22 * TAU, aW = Math.atan2(-85 - S.z, -150 - S.x), sy = aL - aW;
+  const S = P.sanctum, aL = 8.5 / 22 * TAU, aW = Math.atan2(-85 * WS - S.z, -150 * WS - S.x), sy = aL - aW;
   STRUCT.sanctum = placeStatic('sanctum', new V(S.x, S.h, S.z), sy);
   STRUCT.gateDir = aW;
   COLLIDERS.push({ t: 'shell', c: new V(S.x, S.h, S.z), R: 34, H: 24, gapDir: aW, gapW: 0.15, gapH: 9, open: () => G.flags.gateOpen });
@@ -2125,6 +2528,80 @@ function initStructures() {
   // island landmark
   placeStatic('island', new V(95 * WS, -3, 70 * WS), 0.3);
   COLLIDERS.push({ t: 'sph', c: new V(95 * WS, -5, 70 * WS), r: 13 });
+  // Odyssey-7 main hull (axis aligned, bow to -Z) — solid until the reactor blast tears open the starboard side
+  { const sp = new V(P.ship.x, 0, P.ship.z), S = SHIP, B = S.breach; STRUCT.shipPos = sp;
+  STRUCT.ship = placeStatic('odyssey', sp, 0); STRUCT.shipBlown = placeStatic('odyssey_blown', sp, 0); STRUCT.shipBlown.visible = false;
+  const sb = (x0, y0, z0, x1, y1, z1, on) => COLLIDERS.push({ t: 'box', min: new V(sp.x + x0, y0, sp.z + z0), max: new V(sp.x + x1, y1, sp.z + z1), on });
+  sb(-S.hw, S.bot, -S.midZ, -S.hw + S.wall, S.deck, S.midZ); // port wall
+  sb(S.hw - S.wall, S.bot, -S.midZ, S.hw, S.deck, B.z0); sb(S.hw - S.wall, S.bot, B.z1, S.hw, S.deck, S.midZ); // starboard wall
+  sb(S.hw - S.wall, S.bot, B.z0, S.hw, B.y0, B.z1); sb(S.hw - S.wall, B.y1, B.z0, S.hw, S.deck, B.z1);
+  sb(S.hw - S.wall, B.y0, B.z0, S.hw, B.y1, B.z1, () => !G.flags.shipBlown); // the breach, sealed until the blast
+  sb(-S.hw, S.bot, -S.bowZ, S.hw, S.floor, S.bowZ); sb(-S.hw, S.ceil, -S.midZ, S.hw, S.deck + 4, S.midZ); // keel, upper decks
+  sb(-S.hw, S.bot, -S.midZ - 1, S.hw, S.deck, -S.midZ + 0.8); sb(-S.hw, S.bot, S.midZ - 0.8, S.hw, S.deck, S.midZ + 1); // bulkheads
+  sb(-S.hw * 0.8, S.bot + 2, -S.bowZ, S.hw * 0.8, S.deck + 6, -S.midZ - 1); sb(-S.hw, S.bot, S.midZ + 1, S.hw, S.deck + 2, S.bowZ); // bow, stern
+  sb(-12, S.deck, 39, 12, S.deck + 25, 65); // command tower
+  sb(-16, -20.9, -50, -4, -20.1, 50); } // catwalk
+}
+// inside the flooded cargo hold of the Odyssey-7?
+function insideShip(p) {
+  const s = STRUCT.shipPos; if (!s) return false; const x = p.x - s.x, z = p.z - s.z;
+  return Math.abs(x) < SHIP.hw - SHIP.wall && Math.abs(z) < SHIP.midZ && p.y > SHIP.floor && p.y < SHIP.ceil;
+}
+// ---- the Odyssey-7 countdown, reactor blast and what's left inside ----
+const SHIPFX = { wave: null }, SHIP_CRATES = [];
+const SHIP_LIGHT = { p: new V(), r: 0, c: [0.4, 0.7, 1] }, SHIP_FIRE = { p: new V(), r: 0, c: [1, 0.5, 0.15] };
+function initShipStory() {
+  const s = STRUCT.shipPos, L = (x, y, z) => new V(s.x + x, y, s.z + z);
+  LOGS.odyssey = { t: 'Odyssey-7 — Engineering Log', x: 'Impact plus 2 hours. Main hull ran aground on a reef shelf; the keel is wedged into the sand, so most of her still stands above the waves.\n\nThe drive core is cracked. Containment field is holding on backup power, which by my maths gives us about three local days before it fails.\n\nOrders: all hands to the escape pods. Seal every hatch. Nobody comes back aboard until it is over.' };
+  LOGS.meltdown = { t: 'Odyssey-7 — Reactor Failure', x: 'Containment failed. The drive core detonated and blew out the starboard side of the cargo hold.\n\nThe hull is open now: the breach is below the waterline on the starboard side. Radiation is severe around the wreck and lethal inside the hold. Wear a Radiation Suit (lead + synthetic fiber) before going in.\n\nSupply lockers in the hold may still hold useful salvage.' };
+  SHIP_LIGHT.p.copy(L(4, SHIP.floor + 8, 48)); SHIP_FIRE.p.copy(L(0, SHIP.deck + 4, -10));
+  POINT_LIGHTS.push(SHIP_LIGHT, SHIP_FIRE);
+  addPad('odyssey', s.x - 10, -20.1, s.z, 0);
+  const loot = [[['titanium_ingot', 2], ['lead_plating', 2]], [['power_cell', 1], ['lubricant', 2]], [['plasteel', 1], ['computer_chip', 1]], [['reactor_rod', 1], ['wiring', 2]], [['ultra_tank', 1]]];
+  const spots = [[-12, -20.1, -30], [-8, -20.1, 28], [8, SHIP.floor, -40], [13, SHIP.floor, 8], [-4, SHIP.floor, 40]];
+  spots.forEach(([x, y, z], i) => {
+    const it = mkItem('loot_crate'); it.setTRS(L(x, y, z), new Q().ypr(i * 0.7), 1);
+    SHIP_CRATES.push({ i, it });
+    INTERACT.push({ pos: L(x, y + 0.7, z), r: 2.6, label: () => G.flags.shipBlown && !(G.flags.shipLoot || [])[i] ? 'Open supply locker' : null, use: () => {
+      G.flags.shipLoot = G.flags.shipLoot || [];
+      for (const [id, n] of loot[i]) give(id, n);
+      G.flags.shipLoot[i] = true; it.visible = false; sfx('pickup');
+    } });
+  });
+}
+function blowShip() {
+  G.flags.shipBlown = true; G.flags.shipWarn = 3;
+  const d = PL.head.dist(STRUCT.shipPos);
+  fadeFlash(0.7); shake(d < 600 ? 2.5 : 1); sfx('blast'); setTimeout(() => sfx('blast'), 280); sfx('roar', 30);
+  if (SHIPFX.wave) R.remove(SHIPFX.wave.it);
+  const it = mkItem('blast_wave', { trans: true, alpha: 0.7 }); it.additive = true; it.alwaysDraw = true;
+  SHIPFX.wave = { it, t: 0 };
+  if (M().dmg && !inSafeZone() && !G.piloting && !G.inTitan && d < 320) hurtPlayer(Math.max(5, 75 * (1 - d / 320)), 'the Odyssey-7 explosion');
+  msg('The Odyssey-7 reactor exploded! Its hull is torn open — wear a Radiation Suit to go inside.', 'warn');
+  addLog('meltdown');
+  netEvent({ k: 'flag', f: 'shipBlown', msg: 'The Odyssey-7 reactor exploded' });
+}
+function updateShip(dt) {
+  if (!STRUCT.ship) return;
+  const f = G.flags, blown = !!f.shipBlown, sp = STRUCT.shipPos;
+  STRUCT.ship.visible = !blown; STRUCT.shipBlown.visible = blown;
+  for (const c of SHIP_CRATES) c.it.visible = blown && !(f.shipLoot || [])[c.i];
+  SHIP_LIGHT.r = 26; SHIP_LIGHT.c = blown ? [0.45, 1, 0.3] : [0.35, 0.6, 1];
+  SHIP_FIRE.r = blown ? 45 : 0; SHIP_FIRE.c = [1, 0.45 + 0.1 * Math.sin(ENV.time * 9), 0.12];
+  if (!blown) {
+    const left = SHIP_BLOW_T - G.time; f.shipWarn = f.shipWarn || 0;
+    if (f.shipWarn < 1 && left < DAY_LEN) { f.shipWarn = 1; msg('Odyssey-7: reactor containment failing. Meltdown in about 24 hours.', 'warn'); sfx('warn'); }
+    if (f.shipWarn < 2 && left < 300) { f.shipWarn = 2; msg('Odyssey-7 reactor CRITICAL — get 300 m away or into shelter!', 'warn'); sfx('warn'); }
+    if (left < 30 && left > 0) warn('ODYSSEY-7 MELTDOWN IN ' + Math.ceil(left) + ' s');
+    if (left <= 0) blowShip();
+  }
+  const W = SHIPFX.wave;
+  if (W) {
+    W.t += dt; W.it.setTRS(sp.clone().add(new V(0, 8, 0)), _q2.ident(), 6 + W.t * 190); W.it.alpha = Math.max(0, 0.7 * (1 - W.t / 2.6));
+    if (W.t > 2.6) { R.remove(W.it); SHIPFX.wave = null; }
+  }
+  // embers and bubbles rise from the wreck after the blast
+  if (blown && PL.head.dist(sp) < 120 && Math.random() < dt * 6) spawnBubbles(sp.clone().add(new V(SHIP.hw + 1, rr(SHIP.breach.y0, SHIP.breach.y1), rr(SHIP.breach.z0, SHIP.breach.z1))), 2, 0.6);
 }
 
 // ===================== 08 GAME STATE =====================
@@ -2135,7 +2612,7 @@ const MODES = {
   creative: { n: 'Creative', food: false, dmg: false, o2: false, warn: true, free: true }
 };
 const INV_CAP = 70;
-const SAVE_KEY = 'diveDeeper.save.v2'; // v2: the bigger, deeper map (older saves belong to the old map)
+const SAVE_KEY = 'diveDeeper.save.v3'; // v2: the bigger, deeper map (older saves belong to the old map)
 function newState(mode) {
   return {
     mode, time: 0, pos: new V(0, POD.floor + 0.95, 0.9), vel: new V(), yaw: 0, pitch: 0,
@@ -2322,17 +2799,20 @@ function deleteSave() { try { localStorage.removeItem(SAVE_KEY); } catch (e) { }
 
 // ===================== 09 CREATURES =====================
 const SPAWN = {
+  // fish lists hold each biome's local species; FISH_WIDE species turn up almost everywhere on top of these
   reef: { fish: [['bubblefish', 5], ['crescentfish', 4]], fishN: 18, big: [['reef_ray', 1]], bigN: 2, pred: [['snapbiter', 1]], predN: 2 },
-  vine: { fish: [['hoverfish', 5], ['bubblefish', 2]], fishN: 14, big: [], bigN: 0, pred: [['vine_stalker', 1]], predN: 2 },
-  crimson: { fish: [['ringfish', 5], ['hoverfish', 1]], fishN: 14, big: [['reef_ray', 1]], bigN: 1, pred: [['sand_hunter', 1]], predN: 2 },
-  wreck: { fish: [['crescentfish', 3], ['bubblefish', 2]], fishN: 10, big: [], bigN: 0, pred: [['snapbiter', 1]], predN: 3 },
-  glow: { fish: [['lensfish', 5], ['glimmerfish', 2]], fishN: 18, big: [['glowray', 1]], bigN: 2, pred: [['phantom_ray', 1]], predN: 1 },
-  dunes: { fish: [['ringfish', 1]], fishN: 5, big: [], bigN: 0, pred: [['sand_hunter', 1]], predN: 2 },
-  abyss: { fish: [['glimmerfish', 4], ['lensfish', 2]], fishN: 10, big: [], bigN: 0, pred: [['blood_leech', 3], ['pulse_squid', 1]], predN: 3 },
-  scarlet: { fish: [['glimmerfish', 2]], fishN: 6, big: [], bigN: 0, pred: [['blood_leech', 2], ['pulse_squid', 1]], predN: 3 },
+  vine: { fish: [['hoverfish', 5]], fishN: 14, big: [], bigN: 0, pred: [['vine_stalker', 1]], predN: 2 },
+  crimson: { fish: [['ringfish', 5], ['hoverfish', 2]], fishN: 14, big: [['reef_ray', 1]], bigN: 1, pred: [['sand_hunter', 1]], predN: 2 },
+  wreck: { fish: [['crescentfish', 3]], fishN: 10, big: [], bigN: 0, pred: [['snapbiter', 1]], predN: 3 },
+  glow: { fish: [['lensfish', 5]], fishN: 18, big: [['glowray', 1]], bigN: 2, pred: [['phantom_ray', 1]], predN: 1 },
+  dunes: { fish: [['ringfish', 2]], fishN: 7, big: [], bigN: 0, pred: [['sand_hunter', 1]], predN: 2 },
+  abyss: { fish: [['lensfish', 2]], fishN: 10, big: [], bigN: 0, pred: [['blood_leech', 3], ['pulse_squid', 1]], predN: 3 },
+  scarlet: { fish: [['lensfish', 1]], fishN: 7, big: [], bigN: 0, pred: [['blood_leech', 2], ['pulse_squid', 1]], predN: 3 },
   furnace: { fish: [['lava_eyefish', 1]], fishN: 9, big: [], bigN: 0, pred: [['magma_grub', 1]], predN: 3 },
   void: { fish: [], fishN: 0, big: [], bigN: 0, pred: [], predN: 0 }
 };
+// widespread fish: found in every biome (lava eyefish, lensfish, hoverfish and ringfish stay in one or two)
+const FISH_WIDE = [['bubblefish', 3], ['crescentfish', 3], ['glimmerfish', 2]];
 const CRE = [];
 const FISH_BATCH = {};
 const _m = M4.create(), _q2 = new Q(), _v2 = new V(), _v3 = new V();
@@ -2394,7 +2874,7 @@ function spawnTick(pos) {
     const cats = [['fish', T.fishN], ['big', T.bigN], ['pred', T.predN]];
     const [cat, N] = cats[Math.floor(rnd() * 3)];
     if (!N || countNear(cat, b, pos, 90) >= N) continue;
-    const list = T[cat]; if (!list || !list.length) continue;
+    const list = cat === 'fish' && b !== 'void' && (rnd() < 0.45 || !T.fish.length) ? FISH_WIDE : T[cat]; if (!list || !list.length) continue;
     const sp = pickW(rnd, list)[0];
     if (sp === 'snapbiter' && b === 'reef' && Math.hypot(x, z) < 50) continue;
     if (cat === 'fish') spawnSchool(sp, p, 3 + Math.floor(rnd() * 4), b);
@@ -2471,11 +2951,24 @@ function repulse(origin, dir, R) {
   }
 }
 
+// Once a hostile animal notices you it hunts you anywhere, across biome borders, until you
+// outrun it (open a big enough gap) or get to shelter: the pod, a habitat room or a vehicle.
+// Leviathans are too big to be put off by a vehicle; only the pod or a base stops them.
+function hunting(c, dist, safe, giveUp, dt) {
+  if (safe) { if (c.hunt) { c.hunt = false; c.huntT = 0; } return false; }
+  if (!c.hunt) { if (dist < c.S.aggro) { c.hunt = true; c.huntT = 0; } return c.hunt; }
+  c.huntT = (c.huntT || 0) + dt;
+  if (dist > giveUp) { c.hunt = false; c.huntT = 0; if (G.mode !== 'creative') msg('You lost the ' + c.S.n + '.', 'good'); }
+  return c.hunt;
+}
+function huntSpd(c) { return c.S.spd * ((c.huntT || 0) > 25 ? 0.82 : 1); } // long chases tire smaller hunters out
 function updateCreature(c, dt) {
-  const S = c.S, tp = playerTargetPos(), dist = c.pos.dist(tp), safe = inSafeZone();
+  const S = c.S, tp = playerTargetPos(), dist = c.pos.dist(tp), safe = inSafeZone() || G.piloting || G.inTitan;
   c.t -= dt; c.atk -= dt; c.stun -= dt; c.fear -= dt; c.wig += dt * (2 + c.vel.len() * 2);
   if (c.dying > 0) { c.dying -= dt * 1.5; if (c.dying <= 0) c.remove(); return; }
   if (c.stun > 0) { c.vel.scale(Math.exp(-2 * dt)); c.pos.addS(c.vel, dt); clampAboveFloor(c); return; }
+  const giveUp = Math.max((S.aggro || 10) * 3.5, 55);
+  if (c.cat === 'pred' || (c.kind === 'ray' && S.hostile)) c.home.copy(c.pos); // a hunter's home is wherever it ends up
   switch (c.kind) {
     case 'fish': {
       const pd = c.pos.dist(PL.head);
@@ -2484,57 +2977,63 @@ function updateCreature(c, dt) {
       clampAboveFloor(c, 0.8); faceVel(c, dt); break;
     }
     case 'ray': {
-      if (S.hostile && !safe && dist < S.aggro && c.state !== 'retreat') c.state = 'chase';
+      const h = S.hostile && hunting(c, dist, safe, giveUp, dt);
+      if (h && c.state !== 'retreat') c.state = 'chase';
       if (c.state === 'chase') {
-        steer(c, tp, S.spd, dt, 2);
-        if (dist < 2.6 && c.atk <= 0) { attackPlayer(c, S.dmg, S.dmg * 0.5); c.atk = 2.5; c.state = 'retreat'; c.t = 5; c.target.copy(c.pos).addS(_v3.copy(c.pos).sub(tp).norm(), 20); }
-        if (dist > S.aggro * 2) c.state = 'wander';
+        if (!h) c.state = 'wander';
+        steer(c, tp, huntSpd(c), dt, 2);
+        if (dist < 2.6 && c.atk <= 0) { attackPlayer(c, S.dmg, S.dmg * 0.5); c.atk = 2.5; c.state = 'retreat'; c.t = 4; c.target.copy(c.pos).addS(_v3.copy(c.pos).sub(tp).norm(), 16); }
       } else {
-        if (c.state === 'retreat' && c.t <= 0) c.state = 'wander';
+        if (c.state === 'retreat' && c.t <= 0) c.state = h ? 'chase' : 'wander';
         if (c.state === 'wander' && (c.t <= 0 || c.pos.distSq(c.target) < 4)) newWander(c, 22, 4);
         steer(c, c.target, S.spd * 0.7, dt, 1.2);
       }
       clampAboveFloor(c, 2); faceVel(c, dt, 2); break;
     }
     case 'hunter': {
-      if (c.state === 'wander' && !safe && dist < S.aggro && c.atk <= 0) c.state = 'chase';
+      const h = hunting(c, dist, safe, giveUp, dt);
+      if (c.state === 'wander' && h && c.atk <= 0) c.state = 'chase';
       if (c.state === 'chase') {
-        if (safe) c.state = 'wander';
-        steer(c, tp, S.spd, dt, 3);
+        if (!h) c.state = 'wander';
+        steer(c, tp, huntSpd(c), dt, 3);
         const reach = G.piloting ? 3.2 : 1.7;
-        if (dist < reach && c.atk <= 0) { attackPlayer(c, S.dmg); c.atk = 3; c.state = 'retreat'; c.t = 3.5; c.target.copy(c.pos).addS(_v3.copy(c.pos).sub(tp).norm(), 10); c.target.y += 2; }
-        if (dist > S.aggro * 1.8) c.state = 'wander';
-      } else if (c.state === 'retreat') { steer(c, c.target, S.spd * 0.9, dt, 3); if (c.t <= 0) c.state = 'wander'; }
+        if (dist < reach && c.atk <= 0) { attackPlayer(c, S.dmg); c.atk = 3; c.state = 'retreat'; c.t = 3; c.target.copy(c.pos).addS(_v3.copy(c.pos).sub(tp).norm(), 10); c.target.y += 2; }
+      } else if (c.state === 'retreat') { steer(c, c.target, S.spd * 0.9, dt, 3); if (c.t <= 0) c.state = h ? 'chase' : 'wander'; }
       else { if (c.t <= 0 || c.pos.distSq(c.target) < 2) newWander(c, 10, 3); steer(c, c.target, S.spd * 0.35, dt, 2); }
       clampAboveFloor(c, 0.8); faceVel(c, dt); break;
     }
     case 'ambush': {
       if (c.state === 'hidden') {
         c.vel.set(0, 0, 0); c.pos.y = heightAt(c.pos.x, c.pos.z) - 0.05;
-        if (!safe && dist < S.aggro) { c.state = 'chase'; sfx('bite'); }
+        if (hunting(c, dist, safe, giveUp, dt)) { c.state = 'chase'; sfx('bite'); }
       } else if (c.state === 'chase') {
-        steer(c, tp, S.spd, dt, 3);
-        if (dist < (G.piloting ? 3.2 : 1.9) && c.atk <= 0) { attackPlayer(c, S.dmg); c.atk = 4; c.state = 'retreat'; c.t = 6; c.target.copy(c.pos).addS(_v3.copy(c.pos).sub(tp).norm(), 14); }
-        if (dist > 30 || safe) { c.state = 'retreat'; c.t = 4; c.target.copy(c.pos); }
+        const h = hunting(c, dist, safe, giveUp, dt);
+        steer(c, tp, huntSpd(c), dt, 3);
+        if (dist < (G.piloting ? 3.2 : 1.9) && c.atk <= 0) { attackPlayer(c, S.dmg); c.atk = 4; c.state = 'retreat'; c.t = 3; c.target.copy(c.pos).addS(_v3.copy(c.pos).sub(tp).norm(), 14); }
+        if (!h) { c.state = 'retreat'; c.t = 4; c.target.copy(c.pos); }
         clampAboveFloor(c, 0.4);
-      } else { steer(c, c.target, S.spd * 0.6, dt, 2); clampAboveFloor(c, 0.3); if (c.t <= 0) c.state = 'hidden'; }
+      } else {
+        steer(c, c.target, S.spd * 0.6, dt, 2); clampAboveFloor(c, 0.3);
+        if (c.t <= 0) c.state = hunting(c, dist, safe, giveUp, dt) ? 'chase' : 'hidden';
+      }
       faceVel(c, dt); break;
     }
     case 'leech': {
       if (c.state === 'attached') {
-        if (G.piloting || safe) { c.state = 'wander'; c.t = 2; break; }
+        if (G.piloting || safe) { c.state = 'wander'; c.t = 2; c.hunt = false; break; }
         c.pos.copy(PL.head).add(c.off); c.vel.set(0, 0, 0);
         if (c.atk <= 0) { hurtPlayer(S.dmg, S.n, true); c.atk = 1; }
         break;
       }
-      if (!safe && !G.piloting && dist < S.aggro) c.state = 'chase';
-      if (c.state === 'chase') { steer(c, PL.head, S.spd, dt, 4); if (c.pos.dist(PL.head) < 0.9) { c.state = 'attached'; c.off = new V(rr(-0.3, 0.3), rr(-0.6, -0.2), rr(-0.3, 0.3)); msg('A Blood Leech latched on! Knife it off.', 'warn'); sfx('bite'); } if (dist > S.aggro * 2) c.state = 'wander'; }
+      const h = hunting(c, dist, safe, giveUp, dt);
+      c.state = h ? 'chase' : c.state === 'chase' ? 'wander' : c.state;
+      if (c.state === 'chase') { steer(c, PL.head, huntSpd(c), dt, 4); if (c.pos.dist(PL.head) < 0.9) { c.state = 'attached'; c.off = new V(rr(-0.3, 0.3), rr(-0.6, -0.2), rr(-0.3, 0.3)); msg('A Blood Leech latched on! Knife it off.', 'warn'); sfx('bite'); } }
       else { if (c.t <= 0) newWander(c, 6, 2); steer(c, c.target, 1, dt, 2); }
       clampAboveFloor(c, 0.4); faceVel(c, dt); break;
     }
     case 'squid': {
-      if (!safe && dist < S.aggro) {
-        _v3.copy(c.pos).sub(tp).norm().scale(8).add(tp); steer(c, _v3, S.spd, dt, 2);
+      if (hunting(c, dist, safe, giveUp, dt)) {
+        _v3.copy(c.pos).sub(tp).norm().scale(8).add(tp); steer(c, _v3, huntSpd(c), dt, 2);
         if (c.atk <= 0 && dist < 12) {
           c.atk = 7; spawnPulse(c.pos);
           if (G.piloting && G.manta) { G.manta.power = Math.max(0, G.manta.power - 25); hurtManta(8); msg('Electric pulse! Manta power drained.', 'warn'); }
@@ -2556,7 +3055,7 @@ function updateCreature(c, dt) {
       c.pos.x = tx; c.pos.z = tz; c.pos.y = heightAt(tx, tz) + 11 * c.size;
       quatFacing(c.q, -Math.sin(t), 0, Math.cos(t)); break;
     }
-    case 'lev': updateLev(c, dt, tp, dist, safe); break;
+    case 'lev': updateLev(c, dt, tp, dist, inSafeZone()); break;
     case 'mother': break;
   }
 }
@@ -2569,14 +3068,16 @@ function updateLev(c, dt, tp, dist, safe) {
   if (DECOY && DECOY.pos.dist(c.pos) < 90) { target = DECOY.pos; spd = S.spd * 0.8; }
   else if (c.fear > 0) { target = _v3.copy(c.pos).sub(tp).norm().scale(40).add(c.pos); spd = S.spd; }
   else if (c.state === 'retreat') { target = c.target; spd = S.spd * 0.7; if (c.t <= 0) c.state = 'wander'; }
-  else if (inTerr && !safe && dist < S.aggro && (G.mode !== 'creative')) {
-    c.state = 'chase'; target = tp; spd = S.spd;
+  else if (G.mode !== 'creative' && !safe && (c.hunt ? dist < S.aggro * 2.5 : inTerr && dist < S.aggro)) {
+    // once it has your scent it follows you out of its territory, until you outrun it or reach the pod / a base
+    c.hunt = true; c.state = 'chase'; target = tp; spd = S.spd;
     if (c.roarT === undefined || c.roarT <= 0) { sfx('roar', dist); c.roarT = 9; }
     if (dist < (G.piloting ? 7 : 5.5) && c.atk <= 0) {
       attackPlayer(c, S.dmg, S.vdmg); c.atk = 6; c.state = 'retreat'; c.t = 7;
       c.target.copy(c.pos).addS(_v3.copy(c.pos).sub(tp).norm(), 50); c.target.y = c.home.y;
     }
   } else {
+    if (c.hunt) { c.hunt = false; if (!safe && G.mode !== 'creative') msg('The ' + S.n + ' lost your trail.', 'good'); }
     c.state = 'wander';
     if (c.t <= 0 || c.pos.distSq(c.target) < 25) {
       if (c.voidG && active) newWander(c, 0, 0), c.target.set(PL.head.x + rr(-40, 40), PL.head.y + rr(-15, 15), PL.head.z + rr(-40, 40));
@@ -2608,11 +3109,11 @@ function updateCreatures(dt) {
   for (let i = PULSES.length - 1; i >= 0; i--) { const P = PULSES[i]; P.t += dt; const s = 1 + P.t * 14; P.it.alpha = Math.max(0, 0.4 - P.t * 0.6); P.it.setTRS(P.p, _q2.ident(), s); if (P.t > 0.7) { R.remove(P.it); PULSES.splice(i, 1); } }
   for (let i = CRE.length - 1; i >= 0; i--) {
     const c = CRE[i];
-    if (!c.persist && c.pos.distSq(PL.head) > 125 * 125) { c.remove(); CRE.splice(i, 1); continue; }
+    if (!c.persist && c.pos.distSq(PL.head) > 125 * 125) { if (c.hunt && G.mode !== 'creative') msg('You lost the ' + c.S.n + '.', 'good'); c.remove(); CRE.splice(i, 1); continue; }
     if (!c.items.length && c.kind !== 'fish' && !c.alive) { CRE.splice(i, 1); continue; }
     if (c.kind === 'fish' && !c.alive && c.dying <= 0) { CRE.splice(i, 1); continue; }
     const far = c.pos.distSq(PL.head) > 160 * 160;
-    if (far && c.kind !== 'giant') { if (c.kind === 'lev') { c.pos.lerpTo(c.home, 0.01 * dt); } continue; }
+    if (far && c.kind !== 'giant') { c.hunt = false; if (c.kind === 'lev') { c.pos.lerpTo(c.home, 0.01 * dt); } continue; }
     updateCreature(c, dt);
   }
 }
@@ -2848,7 +3349,9 @@ function useTool(dt) {
   } else if (tool === 'architect') {
     if (press) { openPDA('build'); }
   } else if (tool === 'glide') {
-    if (held && G.energy.glide > 0) { PL.glide = true; G.energy.glide = Math.max(0, G.energy.glide - dt * 1.6); }
+    const wet = PL.head.y < waterLevelAt(PL.head) + 0.3 && !insideRoom(PL.head);
+    if (held && G.energy.glide > 0 && wet) { PL.glide = true; G.energy.glide = Math.max(0, G.energy.glide - dt * 1.6); }
+    else if (held && press && !wet) msg('The AquaGlide only works in water', 'warn');
     else if (held && press) msg('AquaGlide battery empty — recharge in the pod or a habitat', 'warn');
   } else if (tool === 'blaster') {
     if (press) {
@@ -3131,9 +3634,10 @@ function desktopMove(dt, glide) {
       acc.scale(11 * mul * (k.ShiftLeft ? 1.45 : 1));
     }
     if (f || s || u) PL.strokeT = (PL.strokeT || 0) + dt;
-    if (glide) { acc.addS(PL.aimD, 26); if (Math.random() < dt * 8) spawnBubbles(toolSrc(), 1); }
+    const glideOn = glide && G.pos.y < wl + 0.3; // the propeller needs water
+    if (glideOn) { const d = PL.aimD.clone(); if (air && d.y > 0) { d.y = 0; d.norm(); } acc.addS(d, 26); if (Math.random() < dt * 8) spawnBubbles(toolSrc(), 1); }
     G.vel.addS(acc, dt); G.vel.scale(Math.exp(-1.7 * dt));
-    G.vel.clampLen(glide ? 9.5 : 5.4 * mul * (k.ShiftLeft ? 1.35 : 1));
+    G.vel.clampLen(glideOn ? 9.5 : 5.4 * mul * (k.ShiftLeft ? 1.35 : 1));
   }
   movePlayer(G.vel.clone().scale(dt));
   // collisions: head sphere vs world (terrain, ruins, pod hull, rooms), feet vs floors
@@ -3208,6 +3712,13 @@ function updateSurvival(dt) {
   if (mode.dmg && rad < 78 && !suitItem().rad && !G.piloting && !G.inTitan) {
     hurtPlayer((rad < 30 ? 3 : 1.4) * dt, 'radiation', true); warn('RADIATION — a Radiation Suit is needed here');
     PL.geigerT -= dt; if (PL.geigerT <= 0) { sfx('geiger'); PL.geigerT = rr(0.05, 0.25) * rad / 40; }
+  }
+  if (G.flags.shipBlown && STRUCT.shipPos) { // the exploded Odyssey-7 poisons the water around it
+    const sd = Math.hypot(p.x - STRUCT.shipPos.x, p.z - STRUCT.shipPos.z), inside = insideShip(p);
+    if (mode.dmg && (sd < 150 || inside) && p.y < 16 && !suitItem().rad && !G.piloting && !G.inTitan) {
+      hurtPlayer((inside ? 4 : sd < 70 ? 1.8 : 0.9) * dt, 'radiation', true); warn(inside ? 'LETHAL RADIATION — get out, or wear a Radiation Suit' : 'RADIATION from the Odyssey-7 — a Radiation Suit is needed here');
+      PL.geigerT -= dt; if (PL.geigerT <= 0) { sfx('geiger'); PL.geigerT = rr(0.05, 0.25) * (inside ? 0.3 : sd / 60); }
+    }
   }
   if (mode.dmg && !G.piloting && !G.inTitan && biomeAt(p.x, p.z) === 'furnace' && p.y < -600) {
     if (!suitItem().heat) { hurtPlayer(4 * dt, 'heat', true); warn('EXTREME HEAT — a Thermal Dive Suit is needed'); }
@@ -3573,16 +4084,21 @@ function worldSupport(x, z, yTop) {
   s = Math.max(s, dockSupport(x, z, yTop));
   return s;
 }
-// VR world forces: you ALWAYS fall, like Gorilla Tag. In air 9.8 m/s²; in water a little less with water drag
-// (you still drop to the seabed in a couple of seconds). No buoyancy: nothing holds you up except your hands,
-// your feet on the ground, hard swim pulls, or the Seaglide.
-const WATER_G = -6.5;
+// VR world forces. In air you fall at 9.8 m/s², like Gorilla Tag. In water you are slightly buoyant: let go and
+// you drift slowly up, and at the surface you bob with your head just above the water.
+// The AquaGlide only pushes through water: it does nothing in air, and at the surface it can't lift you out.
+const WATER_LIFT = 0.35;
 function worldForces(dt, glide) {
-  const y = G.pos.y - waterLevelAt(G.pos), air = y > 0 || !!insideRoom(G.pos);
+  const y = G.pos.y - waterLevelAt(G.pos), room = !!insideRoom(G.pos);
+  const air = room || y > 0.45, surface = !air && y > -0.6;
   let ay, drag, acc = null, maxV;
   if (air) { ay = -9.8; drag = 0.05; maxV = 14; }
-  else { ay = WATER_G; drag = 0.45; maxV = 9; acc = swimStrokes(dt); }
-  if (glide) { acc = acc || new V(); acc.addS(PL.aimD, 26); maxV = 9.5; if (Math.random() < dt * 8) spawnBubbles(toolSrc(), 1); }
+  else if (surface) { ay = (0.12 - y) * 9 - G.vel.y * 3; drag = 0.9; maxV = 9; acc = swimStrokes(dt); }
+  else { ay = WATER_LIFT; drag = 0.6; maxV = 9; acc = swimStrokes(dt); }
+  if (glide && !air) {
+    const d = PL.aimD.clone(); if (surface && d.y > 0) { d.y = 0; d.norm(); }
+    acc = acc || new V(); acc.addS(d, 26); maxV = 9.5; if (Math.random() < dt * 8) spawnBubbles(toolSrc(), 1);
+  }
   if (air) for (const h of ['left', 'right']) PL.hands[h].prevRel = null;
   return { ay, drag, acc, maxV, friction: air ? 8 : 5 };
 }
@@ -4251,6 +4767,8 @@ function updateHUD() {
   if (m.food) h += meterHTML('Food', Math.ceil(G.food), G.food / 100, '#ffb24a') + meterHTML('Water', Math.ceil(G.water), G.water / 100, '#5aa8ff');
   if (G.piloting && G.manta) h += meterHTML('Manta hull', Math.ceil(G.manta.hp / 2) + '%', G.manta.hp / 200, '#ff9a6b') + meterHTML('Manta power', Math.ceil(G.manta.power) + '%', G.manta.power / 100, '#7fe0ff') + (G.manta.up.sonar ? meterHTML('Sonar' + (SONAR.cd > 0 ? '' : ' — click'), SONAR.cd > 0 ? Math.ceil(SONAR.cd) + 's' : 'READY', 1 - SONAR.cd / 10, '#4ff0ff') : '');
   if (G.inTitan && G.titan) h += meterHTML('Titan hull', Math.ceil(G.titan.hp / 3) + '%', G.titan.hp / 300, '#ff9a6b') + meterHTML('Titan power', Math.ceil(G.titan.power) + '%', G.titan.power / 100, '#7fe0ff') + meterHTML('Jets', Math.ceil(G.titan.jet) + '%', G.titan.jet / 100, '#ffd26b');
+  { const left = SHIP_BLOW_T - G.time, D = dayInfo(), icon = (ENV.day ?? 1) > 0.5 ? '☀' : '☾';
+    h += '<div class="m" style="margin-top:6px"><b>' + icon + ' ' + clockStr() + '</b>' + (!G.flags.shipBlown && left > 0 ? '<br><span style="color:#ffb37a">Odyssey-7 reactor: ' + (left > 3600 ? Math.ceil(left / DAY_LEN * 24) + ' h' : Math.floor(left / 60) + ':' + String(Math.floor(left % 60)).padStart(2, '0')) + ' to meltdown</span>' : '') + '</div>'; }
   h += '<div class="m" style="margin-top:6px">Depth <b>' + Math.max(0, -PL.head.y).toFixed(0) + ' m</b> · limit ' + curDepthLimit() + ' m<br>' + BIOMES[biomeAt(PL.head.x, PL.head.z)].n + '</div>';
   $('meters').innerHTML = h;
   const o = objective(); $('obj').textContent = '◆ ' + o.t + (UI.markerDist ? ' (' + UI.markerDist + ' m)' : '');
@@ -4648,7 +5166,7 @@ class Avatar {
 }
 
 // ===================== 16 LOBBY (half-submerged glass dive station) =====================
-const BUILD = '11-25 E (vehicles + bigger map)';
+const BUILD = '11-25 G (living ocean + Odyssey-7)';
 const LB = { x: 3000, z: 0, floor: -2.4, eye: 0.95, half: 10 };
 const LP = (x, y, z) => new V(LB.x + x, y, LB.z + z);
 const MIRROR_X = LB.x - 6.4;
@@ -4735,7 +5253,7 @@ function initLobby() {
   put('island', LP(130, -3, -110), 0.8); put('lobby_clouds', LP(0, 0, 0));
   put('lobby_sun', SUN_DIR.clone().scale(520).add(LP(0, 0, 0))).alwaysDraw = true;
   put('lobby_glass', LP(0, 0, 0), 0, { trans: true, alpha: 0.13, noCull: true });
-  LOBBY_WATER = put('lobby_water', LP(0, 0, 0), 0, { trans: true, alpha: 0.62, noCull: true }); LOBBY_WATER.tint = [0.25, 0.65, 0.8, 0.35];
+  LOBBY_WATER = put('lobby_water', LP(0, 0, 0), 0, { trans: true, alpha: 0.62, noCull: true }); LOBBY_WATER.tint = [0.25, 0.65, 0.8, 0.35]; LOBBY_WATER.mat = 1;
   TERMQ = new UIQuad(termCv, 1.3, 0.8125); TERMQ.place(LP(0, LB.floor + 1.08, -8.67), new Q()); R.ui.push(TERMQ);
   SIGNQ = new UIQuad(signCv, 5, 1.25); SIGNQ.place(LP(0, 2.9, -9.9), new Q()); R.ui.push(SIGNQ);
   const g = signCv.getContext('2d'); g.clearRect(0, 0, 1024, 256);
@@ -5163,7 +5681,7 @@ function beginMPDive(mode, world) {
   startGame(mode, null, { guest: true, world });
 }
 // ---- shared world ----
-const SHARED_FLAGS = ['podFixed', 'bridgeOpen', 'labOpen', 'gateOpen', 'quarantineOff', 'launched'];
+const SHARED_FLAGS = ['shipBlown', 'podFixed', 'bridgeOpen', 'labOpen', 'gateOpen', 'quarantineOff', 'launched'];
 function worldSnapshot() {
   const f = {}; for (const k of SHARED_FLAGS) f[k] = !!G.flags[k]; f.leaks = G.flags.leaks.slice();
   return { flags: f, base: G.base.map(serB), rocket: Object.assign({}, G.rocket) };
@@ -5249,10 +5767,10 @@ const FX = { bubbles: [], bubbleB: null, speckB: null, specks: [], shafts: [], w
 const _tm = M4.create();
 function initFX() {
   FX.bubbleB = new InstBatch(MESH('bubble'), 160); R.batches.push(FX.bubbleB);
-  FX.speckB = new InstBatch(MESH('speck'), 160); R.batches.push(FX.speckB);
-  for (let i = 0; i < 150; i++) FX.specks.push(new V(rr(-9, 9), rr(-9, 9), rr(-9, 9)));
-  for (let i = 0; i < 10; i++) { const it = mkItem('shaft', { trans: true, alpha: 0.05 }); it.off = new V(rr(-40, 40), 0, rr(-40, 40)); it.alwaysDraw = true; FX.shafts.push(it); }
-  FX.water = mkItem('water', { trans: true, alpha: 0.75, noCull: true }); FX.water.alwaysDraw = true;
+  FX.speckB = new InstBatch(MESH('speck'), 520); R.batches.push(FX.speckB);
+  for (let i = 0; i < 500; i++) { const s = new V(rr(-12, 12), rr(-12, 12), rr(-12, 12)); s.sz = rr(0.008, 0.032); s.ph = rr(0, TAU); FX.specks.push(s); }
+  for (let i = 0; i < 26; i++) { const it = mkItem('shaft', { trans: true, alpha: 0.11 }); it.mat = 2; it.additive = true; it.off = new V(rr(-45, 45), 0, rr(-45, 45)); it.w = rr(0.6, 1.8); it.alwaysDraw = true; FX.shafts.push(it); }
+  FX.water = mkItem('water', { trans: true, alpha: 0.75, noCull: true }); FX.water.alwaysDraw = true; FX.water.mat = 1;
 }
 function spawnBubbles(p, n, spread = 0.1) { for (let i = 0; i < n && FX.bubbles.length < 160; i++) FX.bubbles.push({ p: p.clone().add(new V(rr(-spread, spread), rr(-spread, spread), rr(-spread, spread))), v: new V(rr(-0.2, 0.2), rr(0.8, 1.6), rr(-0.2, 0.2)), life: rr(2, 4), s: rr(0.015, 0.045) }); }
 function updateFX(dt) {
@@ -5271,18 +5789,21 @@ function updateFX(dt) {
   FX.bubbleB.upload();
   FX.speckB.begin();
   if (under) {
+    // marine snow: a box of drifting motes that wraps around the diver
+    const B = 24, HB = 12, glow = ENV.fog;
     for (const s of FX.specks) {
-      s.y += dt * 0.05; s.x += Math.sin(ENV.time * 0.3 + s.z) * dt * 0.05;
-      const wx = h.x + ((s.x - h.x % 18 + 27) % 18) - 9, wy = h.y + ((s.y - h.y % 18 + 27) % 18) - 9, wz = h.z + ((s.z - h.z % 18 + 27) % 18) - 9;
-      M4.compose(_tm, _v3.set(wx, wy, wz), _q2.ident(), 0.018); FX.speckB.push(_tm, 1, 1, 1, 0);
+      s.y -= dt * 0.035; s.x += Math.sin(ENV.time * 0.3 + s.ph) * dt * 0.06; s.z += Math.cos(ENV.time * 0.23 + s.ph) * dt * 0.05;
+      const wx = h.x + ((((s.x - h.x) % B) + B + HB) % B) - HB, wy = h.y + ((((s.y - h.y) % B) + B + HB) % B) - HB, wz = h.z + ((((s.z - h.z) % B) + B + HB) % B) - HB;
+      const tw = 0.75 + 0.25 * Math.sin(ENV.time * 1.7 + s.ph * 5);
+      M4.compose(_tm, _v3.set(wx, wy, wz), _q2.ident(), s.sz * tw); FX.speckB.push(_tm, 0.8 + glow[0], 0.85 + glow[1], 0.85 + glow[2], 0);
     }
   }
   FX.speckB.upload();
   const sunI = Math.exp(Math.min(h.y, 0) / 55);
   for (const s of FX.shafts) {
-    const gx = Math.floor(h.x / 80) * 80 + s.off.x, gz = Math.floor(h.z / 80) * 80 + s.off.z;
-    s.setTRS(new V(gx + 20 * Math.sin(ENV.time * 0.05 + s.off.x), 0, gz), _q2.ypr(0.3, 0, 0.25), 1, 1, 1);
-    s.alpha = under ? 0.045 * sunI : 0; s.visible = under && h.y > -70;
+    const gx = Math.floor(h.x / 90) * 90 + s.off.x, gz = Math.floor(h.z / 90) * 90 + s.off.z;
+    s.setTRS(new V(gx + 14 * Math.sin(ENV.time * 0.05 + s.off.x), 0, gz + 8 * Math.cos(ENV.time * 0.04 + s.off.z)), _q2.ypr(0.35, 0, 0.28), s.w, 1, s.w);
+    s.alpha = under ? 0.05 * Math.min(1, sunI * 1.4) * (ENV.day ?? 1) : 0; s.visible = under && h.y > -80;
   }
   const wq = _q2.ident();
   FX.water.setTRS(new V(Math.round(h.x / 50) * 50, 0, Math.round(h.z / 50) * 50), wq, 1);
@@ -5300,19 +5821,38 @@ function initPointLights() {
   for (const v of VENTS) POINT_LIGHTS.push({ p: new V(v.x, v.y + 3, v.z), r: 12, c: [1, 0.5, 0.2] });
 }
 const envT = { fog: [0.1, 0.4, 0.5], den: 0.02 };
+// ---- day / night cycle: one day lasts DAY_LEN seconds of play; the game starts just after sunrise on day 1 ----
+const DAY_LEN = 900, SHIP_BLOW_T = 3 * DAY_LEN; // the Odyssey-7 reactor blows after three days
+function dayInfo() { const t = ((G && G.time) || 0) / DAY_LEN; return { day: Math.floor(t + 0.03) + 1, tod: (t + 0.28) % 1 }; }
+function clockStr() { const D = dayInfo(), m = Math.floor(D.tod * 24 * 60), hh = Math.floor(m / 60), mm = m % 60; return 'Day ' + D.day + ' · ' + String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0'); }
 function updateEnv(dt) {
   ENV.split = 0;
   const h = PL.head, b = BIOMES[biomeAt(h.x, h.z)], k = clamp(dt * 0.8, 0, 1);
   for (let i = 0; i < 3; i++) envT.fog[i] = lerp(envT.fog[i], b.fog[i], k);
   envT.den = lerp(envT.den, b.den, k);
   const under = h.y < 0.02, sunI = Math.exp(Math.min(h.y, 0) / 55), dk = 0.25 + 0.75 * Math.exp(Math.min(h.y, 0) / 140);
+  ENV.under = under ? 1 : 0;
+  // ---- day / night: the sun rises in the east, sets in the west; the moon gives a faint blue light at night ----
+  const D = dayInfo(), sunH = Math.sin((D.tod - 0.25) * TAU), az = (D.tod - 0.25) * PI;
+  const dayK = smooth(-0.1, 0.3, sunH); ENV.day = dayK; ENV.sunH = sunH;
+  const sd = new V(-Math.cos(az) * Math.sqrt(Math.max(0, 1 - sunH * sunH)), Math.max(sunH, 0.04), 0.25);
+  const md = new V(0.35, 0.8, -0.45);
+  { const s = dayK > 0.02 ? sd.norm() : md.norm(); ENV.sunDir = [s.x, s.y, s.z]; }
+  const warm = smooth(0, 0.45, sunH), sunCol = [lerp(1.0, 0.95, warm), lerp(0.55, 0.9, warm), lerp(0.32, 0.8, warm)];
+  const moon = [0.16, 0.19, 0.28];
+  const lightCol = [0, 1, 2].map(i => sunCol[i] * dayK + moon[i] * (1 - dayK));
+  const nightK = lerp(0.2, 1, dayK); // how much daylight reaches the water
   if (under) {
-    const amb = [0.06, 0.065, 0.085];
-    for (let i = 0; i < 3; i++) { ENV.fog[i] = envT.fog[i] * dk; ENV.sky[i] = ENV.fog[i] * 1.3 + amb[i]; ENV.gnd[i] = ENV.fog[i] * 0.4 + amb[i] * 0.6; }
-    ENV.fogDen = envT.den; ENV.sun = [0.58 * sunI, 0.62 * sunI, 0.58 * sunI]; ENV.caustic = h.y > -45 ? 0.55 * sunI : 0;
-    ENV.far = Math.min(PL.vr ? 160 : 240, 2.3 / ENV.fogDen);
+    const amb = [0.05, 0.055, 0.08];
+    for (let i = 0; i < 3; i++) { ENV.fog[i] = envT.fog[i] * dk * nightK; ENV.sky[i] = ENV.fog[i] * 1.05 + amb[i]; ENV.gnd[i] = ENV.fog[i] * 0.3 + amb[i] * 0.5; }
+    const si = sunI * lerp(0.25, 1, dayK);
+    ENV.fogDen = envT.den * 0.8; ENV.sun = [lightCol[0] * 0.82 * si, lightCol[1] * 0.9 * si, lightCol[2] * 0.92 * si]; ENV.caustic = h.y > -60 ? 0.75 * sunI * dayK : 0;
+    ENV.far = Math.min(PL.vr ? 170 : 260, 2.3 / ENV.fogDen);
   } else {
-    ENV.fog = [0.62, 0.8, 0.95]; ENV.fogDen = 0.0035; ENV.sky = [0.75, 0.85, 0.95]; ENV.gnd = [0.35, 0.4, 0.45]; ENV.sun = [0.9, 0.88, 0.8]; ENV.caustic = 0; ENV.far = 600;
+    const nf = [0.03, 0.05, 0.1], df = [lerp(0.95, 0.62, warm), lerp(0.6, 0.8, warm), lerp(0.5, 0.95, warm)];
+    ENV.fog = [0, 1, 2].map(i => lerp(nf[i], df[i], dayK)); ENV.fogDen = 0.0028;
+    ENV.sky = [0, 1, 2].map(i => lerp([0.08, 0.1, 0.16][i], [0.75, 0.85, 0.95][i], dayK)); ENV.gnd = [0, 1, 2].map(i => lerp([0.04, 0.05, 0.08][i], [0.35, 0.4, 0.45][i], dayK));
+    ENV.sun = lightCol; ENV.caustic = 0; ENV.far = 650;
   }
   // spotlight
   ENV.lampOn = 0;
@@ -5354,7 +5894,8 @@ function resize() {
 }
 addEventListener('resize', resize); resize();
 function renderDesktop() {
-  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  const post = POST.on && POST.ensure(canvas.width, canvas.height);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, post ? POST.msFB : null);
   gl.viewport(0, 0, canvas.width, canvas.height);
   { const cc = renderClear(); gl.clearColor(cc[0], cc[1], cc[2], 1); } gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   M4.persp(PROJ, 1.2, canvas.width / canvas.height, 0.05, ENV.far + 60);
@@ -5363,6 +5904,7 @@ function renderDesktop() {
   M4.compose(CAMM, cam, PL.headQ, 1); M4.invert(VIEW, CAMM);
   R.cosCull = 0.35;
   R.renderView(PROJ, VIEW, cam);
+  if (post) POST.finish();
 }
 // ---------- main update ----------
 let spawnT = 0, nodeT = 0, saveT = 0, streamT = 0;
@@ -5381,7 +5923,7 @@ function update(dt) {
   updateCreatures(dt); drawCreatures();
   streamT = (streamT + 1) % 3; if (streamT === 0) streamChunks(PL.head, 1);
   nodeT -= dt; if (nodeT <= 0) { nodeT = 0.2; refreshNodeBatches(PL.head); }
-  updateLaunch(dt); updateHolo(dt);
+  updateLaunch(dt); updateHolo(dt); updateShip(dt);
   updateFX(dt); updateEnv(dt); updatePlayerVisuals();
   updateUI(dt); updateAudio(dt);
   saveT += dt; if (saveT > 90) { saveT = 0; saveGame(true); }
@@ -5489,6 +6031,7 @@ addEventListener('keydown', e => {
   if (PL.pdaOpen) return;
   if (e.code === 'KeyE') doInteract();
   if (e.code === 'KeyF') toggleLamp();
+  if (e.code === 'KeyG') { POST.on = !POST.on; if (POST.on) POST.ok = false; msg('Cinematic effects ' + (POST.on ? 'ON' : 'OFF') + ' (G)', 'good'); }
   if (e.code === 'KeyQ') cycleTool(1);
   const n = e.code.match(/^Digit([1-8])$/); if (n) { const o = ownedTools(); const t = o[+n[1] - 1]; if (t) { G.tool = t; cancelPlace(); sfx('ui'); } }
 });
@@ -5520,7 +6063,7 @@ const _upd = update; update = function (dt) { if (SCENE === 'world' && !PL.vr &&
 let WORLD_READY = false;
 function boot() {
   initNodeBatches(); initCreatureBatches(); initFX(); initUIQuads(); initPlayerVisuals(); initStructures(); initPointLights();
-  initStory(); initPersistentCreatures(); initLobby();
+  initStory(); initShipStory(); initPersistentCreatures(); initLobby();
   for (let i = 0; i < 40; i++) streamChunks(new V(0, 0, 0), 1);
   WORLD_READY = true;
   document.getElementById('loading').classList.add('hidden');
@@ -5558,8 +6101,8 @@ function exitToLobby() {
 }
 function lobbyStart(mode, saved) { if (NET.role !== 'none') netLeave(); startGame(mode, saved); }
 function lobbyEnv() {
-  ENV.split = 1; ENV.fog = [0.07, 0.42, 0.56]; ENV.fogDen = 0.016; ENV.sky = [0.86, 0.9, 0.95]; ENV.gnd = [0.5, 0.54, 0.6];
-  ENV.sun = [0.8, 0.78, 0.7]; ENV.sunDir = [SUN_DIR.x, SUN_DIR.y, SUN_DIR.z]; ENV.caustic = 0.22; ENV.far = 900; ENV.lampOn = 0; ENV.pl.fill(0);
+  ENV.split = 1; ENV.under = 0; ENV.day = 1; ENV.fog = [0.07, 0.42, 0.56]; ENV.fogDen = 0.016; ENV.sky = [0.66, 0.71, 0.78]; ENV.gnd = [0.4, 0.43, 0.48];
+  ENV.sun = [0.7, 0.67, 0.6]; ENV.sunDir = [SUN_DIR.x, SUN_DIR.y, SUN_DIR.z]; ENV.caustic = 0.22; ENV.far = 900; ENV.lampOn = 0; ENV.pl.fill(0);
   if (LOBBY_WATER) { const below = PL.head.y < 0; LOBBY_WATER.tint = below ? [0.45, 0.85, 0.95, 0.55] : [0.08, 0.4, 0.55, 0.3]; }
 }
 function updateLobbyFrame(dt) {
@@ -5592,7 +6135,7 @@ function startGame(mode, saved, opts = {}) {
   G.piloting = false; G.inTitan = false; G.dead = false; G.launchY = 0; SONAR.t = -1; SONAR.cd = 0; ENV.sonar = null;
   G.o2 = Math.min(G.o2, maxO2()); if (!saved) G.o2 = maxO2();
   SCENE = 'world'; setLobbyVisible(false); document.body.classList.remove('inlobby');
-  document.getElementById('hint').textContent = 'Click to look (or right-drag / arrows) · WASD swim/walk · Space up (hold in the pod hatch to climb) · C down · Tab PDA · E interact · F lamp · Q / wheel tools';
+  document.getElementById('hint').textContent = 'Click to look (or right-drag / arrows) · WASD swim/walk · Space up (hold in the pod hatch to climb) · C down · Tab PDA · E interact · F lamp · Q / wheel tools · G cinematic FX';
   FX.water.visible = true; LASER.visible = false;
   for (const h of ['left', 'right']) { PL.hands[h].grab = null; PL.hands[h].prevRel = null; }
   GT.reset();
