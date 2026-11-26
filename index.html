@@ -3245,7 +3245,7 @@ function updateCreature(c, dt) {
 function updateLev(c, dt, tp, dist, safe) {
   const S = c.S;
   let active = true;
-  if (c.voidG) { active = Math.hypot(PL.head.x, PL.head.z) > 395; if (!active && c.pos.dist(PL.head) > 150) { c.pos.set(PL.head.x * 1.25, -60, PL.head.z * 1.25); } }
+  if (c.voidG) { active = Math.hypot(PL.head.x, PL.head.z) > 395 * WS; if (!active && c.pos.dist(PL.head) > 150) { c.pos.set(PL.head.x * 1.25, -60, PL.head.z * 1.25); } }
   const inTerr = c.voidG ? active : tp.dist2D(c.home) < c.terr + 35;
   let target = null, spd = S.spd * 0.45;
   if (DECOY && DECOY.pos.dist(c.pos) < 90) { target = DECOY.pos; spd = S.spd * 0.8; }
